@@ -1,22 +1,24 @@
 const fps = 60;
-const fpstest = 1000;
+const fpsLow = 25;
 const gridWidth = 14;
 const gridHeight = 14;
 
 let players = [];
 
-init(gridWidth, gridHeight);
-players.push(new Player(0,0));
+let $map = init(gridWidth, gridHeight);
+let map = new Map($map, gridWidth, gridHeight);
 
-function refreshGrid(){
-  $('.cell').removeClass('cell--player');
-}
+players.push(new Player(4*map.cellSize,4*map.cellSize));
 
 function draw(){
-  refreshGrid();
   for (player of players) {
+    player.update();
     player.display();
   }
+  IHMDebug(players[0], map);
 }
 
-setInterval(draw, 1/fps);
+$('html').keypress( (event) =>  traiterEventKey(event) );
+
+setInterval(draw, 10);
+// draw();

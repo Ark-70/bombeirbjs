@@ -2,8 +2,9 @@
 
 function init(gridWidth, gridHeight){
   domAddCells(gridWidth, gridHeight);
-  gridAddSolids();
-  resize(gridHeight);
+  // gridAddSolids();
+  let sizeMap = resize(gridHeight);
+  return sizeMap;
 }
 
 function domAddCells(nbWidth, nbHeight){
@@ -16,16 +17,8 @@ function domAddCells(nbWidth, nbHeight){
   }
 }
 
-function gridAddSolids(){
-  $($('.cell')[10]).addClass('cell--bloc');
-  $($('.cell')[15]).addClass('cell--bloc');
-  $($('.cell')[17]).addClass('cell--bloc');
-  $($('.cell')[19]).addClass('cell--bloc');
-  $($('.cell')[59]).addClass('cell--bloc');
-}
-
 function resize(gridHeight){
-  $map = $('.map');
+  let $map = $('.map');
   $map.css('grid-template-columns', 'repeat('+gridHeight+',1fr)');
   let pxToRemove = parseInt( $('body').css('margin-top').replace('px',''))*2;
   // console.log(window.innerHeight);
@@ -41,6 +34,7 @@ function resize(gridHeight){
   $('.display').css('max-height', pixelPerfectSquare+'px');
 
   resizeForegroundCells();
+  return $map;
 }
 
 function resizeForegroundCells(){

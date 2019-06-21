@@ -1,3 +1,7 @@
+html{
+  position:relative;
+}
+
 *{
   box-sizing: border-box;
 }
@@ -53,7 +57,7 @@ body{
 .cell--empty{
   background: rgba(0,0,0,0.1);
 }
-.cell--bloc{
+.cell--block{
   background: darkRed;
 }
 .cell--player{
@@ -72,4 +76,22 @@ body{
   background-color: black;
   top:0;
   left:0;
+}
+
+
+/* DEBUGSECTION */
+.debug{
+  position:absolute;
+  top:10px;
+  left:10px;
+
+}
+
+.debug__direction{
+  box-sizing: border-box;
+  width:3.5em;
+  height:3.5em;
+  background-color: lightgrey;
+  border-radius: 25%;
+  border:10px solid skyBlue;
 }

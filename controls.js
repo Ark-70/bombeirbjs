@@ -5,31 +5,84 @@ const ALPHA_END   = 'Z'.charCodeAt(0);
 
 // $('html').keypress(traiterEventKey(event));
 // $('html').keydown(traiterEventKeyCode(event));
-$('html').keypress( (event) =>  traiterEventKey(event) );
-$('html').keydown( (event) =>  traiterEventKeyCode(event) );
+$('html').keydown(  (event) =>  traiterEventKeyDown(event) );
+$('html').keyup(    (event) =>  traiterEventKeyUp(event) );
 
-function traiterEventKey(event){
-  key = event.key;
-  switch (key) {
-    case "":
+// function traiterEventKey(event){
+//   key = event.key;
+//   switch (key) {
+//     case "ENTER":
+//
+//       break;
+//     default:
+//
+//   }
+// }
 
-      break;
-    default:
-
-  }
-}
-
-function traiterEventKeyCode(event){
+function traiterEventKeyDown(event){
   key = event.keyCode;
   switch (key) {
-    case UP :
+    case LEFT :
+      players[0].setKeyDown('y', 'LEFT', 1);
+      players[0].setDirection('x', 'LEFT');
+      break;
     case RIGHT :
+      players[0].setKeyDown('y', 'RIGHT', 1);
+      players[0].setDirection('x', 'RIGHT');
+      break;
+    case UP :
+      players[0].setKeyDown('x', 'UP', 1);
+      players[0].setDirection('y', 'UP');
+      break;
     case DOWN :
-    case LEFT:
-      players[0].wantToMove(key);
-      // players[0].move(newX, newY);
-    default:
-    //do nothing
-
+    players[0].setKeyDown('x', 'DOWN', 1);
+      players[0].setDirection('y', 'DOWN');
+      break;
   }
 }
+
+function traiterEventKeyUp(event){
+  dir = event.keyCode;
+  switch (dir) {
+    case UP :
+      players[0].setKeyDown('y', 'UP', 0);
+      if(players[0].getDirection('y')=='UP'){
+        players[0].resetDirection('y');
+      }
+      break;
+    case DOWN :
+      players[0].setKeyDown('y', 'DOWN', 0);
+      if(players[0].getDirection('y')=='DOWN'){
+        players[0].resetDirection('y');
+      }
+      break;
+    case LEFT :
+      players[0].setKeyDown('x', 'LEFT', 0);
+      if(players[0].getDirection('x')=='LEFT'){
+        players[0].resetDirection('x');
+      }
+      break;
+    case RIGHT :
+      players[0].setKeyDown('x', 'RIGHT', 0);
+      if(players[0].getDirection('x')=='RIGHT'){
+        players[0].resetDirection('x');
+      }
+      break;
+  }
+}
+
+// $()
+// function traiterEventKeyCode(event){
+//   key = event.keyCode;
+//   switch (key) {
+//     case UP :
+//     case RIGHT :
+//     case DOWN :
+//     case LEFT:
+//       players[0].wantToMove(key);
+//       // players[0].move(newX, newY);
+//     default:
+//     //do nothing
+//
+//   }
+// }
