@@ -23,43 +23,31 @@ class Player extends Entity{
 
   wantToMove(){
     if (this.directions.x!=0 || this.directions.y!=0){
+      console.log("Want to move :");
       let nextPos = this.posAfterDir(this.directions);
-      console.log("nextPos", nextPos);
-      // if(this.canTheyMove(...nextPos)){//METTRE TOUT LE TABLEAU
       let obstacles = this.obstaclesOn(...nextPos);
-
-
       let offsetToLine = Map.offsetToBeOnALine(this.y);
       let offsetToCol = Map.offsetToBeOnACol(this.x);
+      // console.log("nextPos", nextPos);
+      // if(this.canTheyMove(...nextPos)){//METTRE TOUT LE TABLEAU
 
       if(obstacles==0){//METTRE TOUT LE TABLEAU //Obligé ==0 pour []==0
         console.log("moved");
         this.move(...nextPos);
-
-
       }else{
         console.log("thereisobstacle", obstacles);
         // le problème est que je file cell.xGrid
-
-
         //NE MARCHE PAS ME DEVRAIT ETRE UN PEU COMME CA
         let objA = {posCtr:0, width:this.width}, objB = {posCtr:0, width:map.cellSize};
+        //C'est ici que posCtr s'écrase même s'il y a une diagonale
         switch (this.directions.x) {
           case 'LEFT':
-            objA.posCtr = this.x; //gauche de l'objet A
-            objB.posCtr = obstacles[0][0]*map.cellSize+map.cellSize/2; //droite de l'objet B
-            break;
           case 'RIGHT':
             objA.posCtr = this.x; //gauche de l'objet A
             objB.posCtr = obstacles[0][0]*map.cellSize+map.cellSize/2; //droite de l'objet B
-
             break;
         }switch (this.directions.y) {
           case 'UP':
-            objA.posCtr = this.y; //gauche de l'objet A
-            objB.posCtr = obstacles[0][1]*map.cellSize+map.cellSize/2; //droite de l'objet B
-
-            break;
           case 'DOWN':
             objA.posCtr = this.y; //gauche de l'objet A
             objB.posCtr = obstacles[0][1]*map.cellSize+map.cellSize/2; //droite de l'objet B
@@ -68,13 +56,25 @@ class Player extends Entity{
         let distance = Map.innerDistanceBweenCells({pos:objA.posCtr, width:objA.width},{pos:objB.posCtr, width:objB.width});
 
 
-
         // let distance = Map.innerDistanceBweenCells({pos:this.y, width:this.height},{pos:obstacles[0][1]*map.cellSize, width:map.cellSize});
         console.log("distance et maxspeed",distance, this.maxSpeed);
-        if( 0<distance && distance<this.maxSpeed ){//TODO A CHANGER CA, C'EST BIZARRE QUE CE CAS SE TRAITE QUE MAINTENANT
-
-          console.log("snapping into", distance, this.y+offsetToLine);
-          this.move(this.x, this.y+distance);
+        if( (-this.maxSpeed)<distance && distance<this.maxSpeed ){//TODO A CHANGER CA, C'EST BIZARRE QUE CE CAS SE TRAITE QUE MAINTENANT
+        // TODO c'est chelou qu'un jour j'ai une distance = -1 mais bon ballec maintenant j'ai bodge pour que ça marche alors ça va pas me faire chier longtemps
+          let addPos = {x:0,y:0};
+          switch (this.directions.x) {
+            case 'LEFT':
+            case 'RIGHT':
+              addPos.x = Math.abs(distance);
+              break;
+          }
+          switch (this.directions.y) {
+            case 'UP':
+            case 'DOWN':
+              addPos.y = Math.abs(distance);
+              // console.log("On a distance = "+distance+" et on move ("+this.x+", "+this.y+distance+")");
+              break;
+          }
+          this.move(this.x+addPos.x, this.y+addPos.y);
         }
       }//else{
         // this.goingDir = Map.closestLine(this.y);

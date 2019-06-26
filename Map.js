@@ -103,6 +103,6 @@ class Map {
     // TODO elle pue de ouf cell1 est prise depuis son centre mais pas cell2
     console.log(cell1, cell2);
     console.log("=> distance =", (Math.abs(cell1.pos-cell2.pos)-cell1.width/2-cell2.width/2));
-    return (Math.abs(cell1.pos-cell2.pos)-cell1.width/2-cell2.width/2);
+    return ( Math.abs(cell1.pos-cell2.pos)-cell1.width/2-cell2.width/2 );
   }
 }

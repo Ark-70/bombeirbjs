@@ -8,7 +8,7 @@ let players = [];
 let $map = init(gridWidth, gridHeight);
 let map = new Map($map, gridWidth, gridHeight);
 
-players.push(new Player(4*map.cellSize,4*map.cellSize));
+players.push(new Player(5*map.cellSize,5*map.cellSize));
 
 function draw(){
   for (player of players) {
