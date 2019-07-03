@@ -9,12 +9,14 @@ class Map {
     this.gridHeight = gridHeight;
     this.cellSize = Math.round(this.$element.find('.cell').css('height').replace('px',''));//px
     this.cells = [];
-    this.constructCells();
+    this.constructGridCells();
+    this.cellsWall = [[8, 12], [2, 5], [10, 4], [12, 6], [6, 6], [7, 1]];
     this.cellsBlock = [[10, 12], [4, 5], [8, 4], [6,9], [10,7], [4,1], [11,1], [2,10]];
     this.replaceTypeOfCells(this.cellsBlock, 'block');
+    this.replaceTypeOfCells(this.cellsWall, 'wall');
   }
 
-  constructCells(){
+  constructGridCells(){
     let cellsDom = $('.cell').toArray();
     // console.log($cellsDom.toArray());
     for (let y=0 ; y<gridHeight ; y++) {
@@ -30,9 +32,18 @@ class Map {
     }
   }
 
+  constructForeCell(xG, yG, type){
+    let $tmpCell = domAddForeCell(xG, yG, type);
+    let tmpCell = new Cell($tmpCell, this.cellSize, type);
+  }
+
   getCellAt(x, y){
-    // console.log("get cell at", this.cells, x, y);
+    console.log("get cell at", this.cells, x, y);
     return this.cells[x][y];
+  }
+  getCellTypeAt(x, y){
+    let tmpCell = this.getCellAt(x, y);
+    return tmpCell.getType();
   }
 
   replaceTypeOfCells(cellsPos, type){

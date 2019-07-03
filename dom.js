@@ -17,6 +17,17 @@ function domAddCells(nbWidth, nbHeight){
   }
 }
 
+function domAddForeCell(xG, yG, type){
+  let $tmpCell = $(document.createElement('div')).addClass('forecell').addClass('cell--'+type).data('x', xG).data('y', yG);
+  $('.map').append($tmpCell);
+  console.log("ALLO FQFNEFS");
+  resizeForegroundCells();
+  let sizeCell = Math.round($($('.cell')[0]).css('height').replace('px',''));
+  $tmpCell.css('left',xG*sizeCell+'px');
+  $tmpCell.css('top',yG*sizeCell+'px');
+  return $tmpCell;
+}
+
 function resize(gridHeight){
   let $map = $('.map');
   $map.css('grid-template-columns', 'repeat('+gridHeight+',1fr)');
@@ -30,6 +41,7 @@ function resize(gridHeight){
   $map.css('max-height', pixelPerfectSquare+'px');
   console.log("size map", pixelPerfectSquare);
 
+  cellSize = $('')
   $('.display').css('max-width', pixelPerfectSquare+'px');
   $('.display').css('max-height', pixelPerfectSquare+'px');
 

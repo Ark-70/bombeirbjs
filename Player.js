@@ -9,7 +9,7 @@ class Player extends Entity{
     this.x += map.cellSize/2;
     this.y += map.cellSize/2;
     this.maxSpeed = speed;
-    this.keyDown = {x:{UP:0, DOWN:0}, y:{LEFT:0, RIGHT:0}};
+    this.keyDown = {'x':{'UP':0, 'DOWN':0}, 'y':{'LEFT':0, 'RIGHT':0}};
     let gridPos = Map.posToGridPos(x, y);
     this.gridPos = {'x':gridPos[0], 'y':gridPos[1]};
     this.directions = {'x':0, 'y':0};
@@ -18,12 +18,26 @@ class Player extends Entity{
 
   update(){
     // if()
-    this.wantToMove();
+    if (this.directions.x!=0 || this.directions.y!=0){
+      this.wantToMove();
+    }
+  }
+
+  plantBomb(){
+    let xG = this.gridPos.x, yG = this.gridPos.y;
+    console.log("ALLO1");
+    if(map.getCellTypeAt(xG, yG)=='empty'){
+      console.log("ALLO2");
+      map.constructForeCell(xG, yG, 'bomb');
+    }
+
+  }
+
+  canTheyMove(directions){
+
   }
 
   wantToMove(){
-    if (this.directions.x!=0 || this.directions.y!=0){
-      console.log("Want to move :");
       let nextPos = this.posAfterDir(this.directions);
       let obstacles = this.obstaclesOn(...nextPos);
       let offsetToLine = Map.offsetToBeOnALine(this.y);
@@ -32,33 +46,28 @@ class Player extends Entity{
       // if(this.canTheyMove(...nextPos)){//METTRE TOUT LE TABLEAU
 
       if(obstacles==0){//METTRE TOUT LE TABLEAU //Obligé ==0 pour []==0
-        console.log("moved");
         this.move(...nextPos);
+        console.log("moved");
       }else{
         console.log("thereisobstacle", obstacles);
-        // le problème est que je file cell.xGrid
-        //NE MARCHE PAS ME DEVRAIT ETRE UN PEU COMME CA
         let objA = {posCtr:0, width:this.width}, objB = {posCtr:0, width:map.cellSize};
         //C'est ici que posCtr s'écrase même s'il y a une diagonale
-        switch (this.directions.x) {
-          case 'LEFT':
-          case 'RIGHT':
+        if(this.directions.x!=0) {
             objA.posCtr = this.x; //gauche de l'objet A
             objB.posCtr = obstacles[0][0]*map.cellSize+map.cellSize/2; //droite de l'objet B
-            break;
-        }switch (this.directions.y) {
-          case 'UP':
-          case 'DOWN':
+        }
+        if(this.directions.y!=0) {
             objA.posCtr = this.y; //gauche de l'objet A
             objB.posCtr = obstacles[0][1]*map.cellSize+map.cellSize/2; //droite de l'objet B
-            break;
         }
+        // let objs = this.getPosOfObjs()
         let distance = Map.innerDistanceBweenCells({pos:objA.posCtr, width:objA.width},{pos:objB.posCtr, width:objB.width});
 
 
         // let distance = Map.innerDistanceBweenCells({pos:this.y, width:this.height},{pos:obstacles[0][1]*map.cellSize, width:map.cellSize});
         console.log("distance et maxspeed",distance, this.maxSpeed);
         if( (-this.maxSpeed)<distance && distance<this.maxSpeed ){//TODO A CHANGER CA, C'EST BIZARRE QUE CE CAS SE TRAITE QUE MAINTENANT
+          console.log("Need to snap on obstacle");
         // TODO c'est chelou qu'un jour j'ai une distance = -1 mais bon ballec maintenant j'ai bodge pour que ça marche alors ça va pas me faire chier longtemps
           let addPos = {x:0,y:0};
           switch (this.directions.x) {
@@ -85,7 +94,6 @@ class Player extends Entity{
       // }else{
       //   glide();
       // }
-    }
     // this.moveInGoingDir();
     // if(dirX=='LEFT' || dirX=='RIGHT'){
     //   this.goingDir.x = dirX;
@@ -209,7 +217,6 @@ class Player extends Entity{
   }
 
   display(){
-    let z = this.y*gridWidth+this.x;
     $('.player').css('left',this.x+this.offsetFromCenter.x);
     $('.player').css('top',this.y+this.offsetFromCenter.y);
     // $($('.cell')[z]).css('background-color', 'black');
@@ -300,7 +307,7 @@ class Player extends Entity{
   updateY(y){ this.y = x; }
   setStateX(x){ this.state['x'] = x; }
   setStateY(y){ this.state['y'] = y; }
-  setKeyDown(keyStr, value=1){ this.keyDown[keyStr]=value; }
+  setKeyDown(axe, keyStr, value=1){ this.keyDown[axe][keyStr]=value; }
   setDirection(axe, dir){ this.directions[axe] = dir; }
   getDirection(axe){ return this.directions[axe]; }
   getPosX(){ return this.x; }

@@ -3,8 +3,8 @@
 const ALPHA_START = 'A'.charCodeAt(0);
 const ALPHA_END   = 'Z'.charCodeAt(0);
 
-// $('html').keypress(traiterEventKey(event));
 // $('html').keydown(traiterEventKeyCode(event));
+$('html').keypress( (event) =>  traiterEventKeyPressed(event) );
 $('html').keydown(  (event) =>  traiterEventKeyDown(event) );
 $('html').keyup(    (event) =>  traiterEventKeyUp(event) );
 
@@ -18,31 +18,44 @@ $('html').keyup(    (event) =>  traiterEventKeyUp(event) );
 //
 //   }
 // }
+function traiterEventKeyPressed(event){
+  let key = event.key;
+  switch (key) {
+    case ' ':
+      console.log("ALLO0");
+      players[0].plantBomb();
+      break;
+    default:
+
+  }
+}
+
 
 function traiterEventKeyDown(event){
-  key = event.keyCode;
+  let key = event.keyCode;
   switch (key) {
     case LEFT :
-      players[0].setKeyDown('y', 'LEFT', 1);
+      players[0].setKeyDown('x', 'LEFT', 1);
       players[0].setDirection('x', 'LEFT');
       break;
     case RIGHT :
-      players[0].setKeyDown('y', 'RIGHT', 1);
+      players[0].setKeyDown('x', 'RIGHT', 1);
       players[0].setDirection('x', 'RIGHT');
       break;
     case UP :
-      players[0].setKeyDown('x', 'UP', 1);
+      players[0].setKeyDown('y', 'UP', 1);
       players[0].setDirection('y', 'UP');
       break;
     case DOWN :
-    players[0].setKeyDown('x', 'DOWN', 1);
+    players[0].setKeyDown('y', 'DOWN', 1);
       players[0].setDirection('y', 'DOWN');
       break;
+      default:
   }
 }
 
 function traiterEventKeyUp(event){
-  dir = event.keyCode;
+  let dir = event.keyCode;
   switch (dir) {
     case UP :
       players[0].setKeyDown('y', 'UP', 0);
@@ -68,6 +81,7 @@ function traiterEventKeyUp(event){
         players[0].resetDirection('x');
       }
       break;
+      default:
   }
 }
 

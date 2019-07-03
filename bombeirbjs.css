@@ -58,7 +58,13 @@ body{
   background: rgba(0,0,0,0.1);
 }
 .cell--block{
-  background: darkRed;
+  background: orange;
+}
+.cell--wall{
+  background: FireBrick;
+}
+.cell--bomb{
+  background: grey;
 }
 .cell--player{
   background: black;
