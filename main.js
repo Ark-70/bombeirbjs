@@ -6,21 +6,38 @@ const fpsLow = 25;
 const gridWidth = 14;
 const gridHeight = 14;
 
+let map = new Map($('.map'), gridWidth, gridHeight);
+// map.constructCells();
 
-let $map = init(gridWidth, gridHeight);
-let map = new Map($map, gridWidth, gridHeight);
+let dom = new Dom();
+dom.createMapDom(map.cells, getUsableHeight(gridHeight));
+
+//map.replacetype
 
 let players = [];
 players.push(new Player(5*map.cellSize,5*map.cellSize));
 
-function draw(){
+
+
+function gameUpdate(){
   for (player of players) {
     player.update();
+  }
+  for (bomb of bombs){
+    bomb.update();
+  }
+  gameDraw();
+}
+
+function gameDraw(){
+  for (player of players) {
     player.display();
+  }
+  for (bomb of bombs){
+    bomb.display();
   }
   IHMDebug(players[0], map);
 }
 
-
-setInterval(draw, 10);
+setInterval(gameUpdate, 10);
 // draw();

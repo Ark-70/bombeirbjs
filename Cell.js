@@ -1,30 +1,49 @@
 class Cell {
-  constructor($elmt, sizeCell, type='empty') {
-    this.$elmt = $elmt;
-    this.size = sizeCell;
-    this.gridX = $elmt.data('x');
-    this.gridY = $elmt.data('y');
-    this.corner = {x:this.gridX*sizeCell, y:this.gridY*sizeCell};
-    this.center = {x:this.corner.x+this.size/2, y:this.corner.y+this.size/2};
-    this.type = type;
+  _grid       = {x:null, y:null};
+  _upperLeft  = {x:null, y:null};
+  _center     = {x:null, y:null};
+  _size;
+  _centerOffset;
+  _type;
+  _$elmt;
+
+
+  constructor(xG, yG, cellSize, type='empty', isForeground=false) {
+    this._size = cellSize;
+    // this._gridX = $elmt.data('x');
+    // this._gridY = $elmt.data('y');
+    this._corner = {x:this._gridX*cellSize, y:this._gridY*cellSize};
+    this._center = {x:this._corner.x+this._size/2, y:this._corner.y+this._size/2};
+    this._type = type;
   }
 
+
+
   changeType(type){
-    let oldType = this.type;
-    this.type = type;
+    let oldType = this._type;
+    this._type = type;
     this.updateDomType(oldType, type);
   }
 
   updateDomType(oldType, newType){
     // console.log(oldType);
     // console.log(newType);
-    // console.log(this.$elmt);
-    this.$elmt.removeClass(`cell--${oldType}`);
-    this.$elmt.addClass(`cell--${newType}`);
+    // console.log(this._$elmt);
+    this._$elmt.removeClass(`cell--${oldType}`);
+    this._$elmt.addClass(`cell--${newType}`);
   }
 
-  getType(){
-    return this.type;
-  }
+
+  get type()      { return this._type; }
+  get upperLeft() { return this._upperLeft; }
+  get grid()      { return this._grid; }
+  get center()    { return this._center; }
+  get $elmt()     { return this._$elmt; }
+
+  set type(type)              { this._type = type; }
+  set upperLeft(upperLeft)    { this._upperLeft = upperLeft; }
+  set grid(grid)              { this._grid = grid; }
+  set center(center)          { this._center = center; }
+  set $elmt($elmt)            { this._$elmt = $elmt; }
 
 }

@@ -1,17 +1,26 @@
-class Player extends Entity{
-  constructor(x, y, speed=3) {
-    super(x, y);
-    console.log(map.cellSize);
-    console.log($($('.cell')[0]).css('height'));
-    this.width = map.cellSize;
-    this.height = map.cellSize;
-    this.offsetFromCenter = {x:(-this.width/2), y:(-this.height/2)};
-    this.x += map.cellSize/2;
-    this.y += map.cellSize/2;
+class Player{
+  cell;
+  maxSpeed;
+  directions;// wantedMovement;
+  goingDir;// movement;
+
+  constructor(xG, yG, size, speed=3) {
+    // super(x, y);
+    this.cell = new Cell(xG, yG, size, 'player');
+
+    // this.x = x;
+    // this.y = y;
+    // console.log(map.cellSize);
+    // console.log($($('.cell')[0]).css('height'));
+    // this.width = map.cellSize;
+    // this.height = map.cellSize;
+    // this.offsetFromCenter = {x:(-this.width/2), y:(-this.height/2)};
+    // this.x += map.cellSize/2;
+    // this.y += map.cellSize/2;
     this.maxSpeed = speed;
     this.keyDown = {'x':{'UP':0, 'DOWN':0}, 'y':{'LEFT':0, 'RIGHT':0}};
-    let gridPos = Map.posToGridPos(x, y);
-    this.gridPos = {'x':gridPos[0], 'y':gridPos[1]};
+    // let gridPos = Map.posToGridPos(xG, yG);
+    // this.gridPos = {'x':gridPos[0], 'y':gridPos[1]};
     this.directions = {'x':0, 'y':0};
     this.goingDir = this.directions;
   }
@@ -25,9 +34,7 @@ class Player extends Entity{
 
   plantBomb(){
     let xG = this.gridPos.x, yG = this.gridPos.y;
-    console.log("ALLO1");
     if(map.getCellTypeAt(xG, yG)=='empty'){
-      console.log("ALLO2");
       map.constructForeCell(xG, yG, 'bomb');
     }
 
@@ -304,7 +311,7 @@ class Player extends Entity{
 
 
   updateX(x){ this.x = x; }
-  updateY(y){ this.y = x; }
+  updateY(y){ this.y = y; }
   setStateX(x){ this.state['x'] = x; }
   setStateY(y){ this.state['y'] = y; }
   setKeyDown(axe, keyStr, value=1){ this.keyDown[axe][keyStr]=value; }

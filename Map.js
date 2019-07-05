@@ -1,40 +1,56 @@
 const DB_MAP = 1;
 
 class Map {
+  $elmt;
+  gridWidth;
+  gridHeight;
+  height;
+  width;
+  cells;
+
   constructor($map, gridWidth, gridHeight) {
-    this.$element = $map;
-    this.height = this.$element.css('max-height');
-    this.width = this.$element.css('max-height');
+    this.$elmt = $map;
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
-    this.cellSize = Math.round(this.$element.find('.cell').css('height').replace('px',''));//px
-    this.cells = [];
-    this.constructGridCells();
+    this.height = getUsableHeight(gridHeight);
+    this.width = getUsableWidth(gridWidth);
+    this.cellSize = this.height/gridHeight;//marche tant que height==width
+    this.constructGridCells(this.cells);
     this.cellsWall = [[8, 12], [2, 5], [10, 4], [12, 6], [6, 6], [7, 1]];
     this.cellsBlock = [[10, 12], [4, 5], [8, 4], [6,9], [10,7], [4,1], [11,1], [2,10]];
-    this.replaceTypeOfCells(this.cellsBlock, 'block');
-    this.replaceTypeOfCells(this.cellsWall, 'wall');
+    // this.replaceTypeOfCells(this.cellsBlock, 'block');
+    // this.replaceTypeOfCells(this.cellsWall, 'wall');
   }
 
-  constructGridCells(){
-    let cellsDom = $('.cell').toArray();
-    // console.log($cellsDom.toArray());
-    for (let y=0 ; y<gridHeight ; y++) {
+  constructGridCells(cells){
+    this.cells = [];
+    for (let yG=0; yG<gridHeight; yG++) {
       let tmpTabAllY = [];
-      for (let x=0; x<gridWidth; x++) {
-        let elmt = cellsDom[x*this.gridWidth+y]
-        let tmpCell = new Cell($(elmt), this.cellSize);
+      for (let xG=0; xG<gridWidth; xG++) {
+        let tmpCell = new Cell(xG, yG, this.cellSize);
         tmpTabAllY.push(tmpCell);
-        // C'EST QU'UN TABLEAU ET PAS UN TABLEAU DE TABLEAU
-        // let tmpCell = new Cell($(elmt), this.cellSize);
       }
       this.cells.push(tmpTabAllY);
     }
   }
+    // let cellsDom = $('.cell').toArray();
+    // // console.log($cellsDom.toArray());
+    // for (let y=0 ; y<gridHeight ; y++) {
+    //   let tmpTabAllY = [];
+    //   for (let x=0; x<gridWidth; x++) {
+    //     let elmt = cellsDom[x*this.gridWidth+y]
+    //     let tmpCell = new Cell($(elmt), this.cellSize);
+    //     tmpTabAllY.push(tmpCell);
+    //     // C'EST QU'UN TABLEAU ET PAS UN TABLEAU DE TABLEAU
+    //     // let tmpCell = new Cell($(elmt), this.cellSize);
+    //   }
+    //   this.cells.push(tmpTabAllY);
+    // }
 
-  constructForeCell(xG, yG, type){
-    let $tmpCell = domAddForeCell(xG, yG, type);
-    let tmpCell = new Cell($tmpCell, this.cellSize, type);
+  constructForeCell(xG, yG, type, foreground=true){
+    // let $tmpCell = domAddForeCell(xG, yG, type);
+    let tmpCell = new Cell(xG, yG, this.cellSize, type, isForeground=true);
+    this.cells.push(tmpCell);
   }
 
   getCellAt(x, y){
