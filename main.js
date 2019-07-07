@@ -10,9 +10,12 @@ let map = new Map($('.map'), gridWidth, gridHeight);
 // map.constructCells();
 
 let dom = new Dom();
-dom.createMapDom(map.cells, getUsableHeight(gridHeight));
+console.log("mais putain");
+dom.createMapDom(map.cells, gridWidth, gridHeight, getUsableHeight(gridHeight));
+console.log("bordel");
 
-//map.replacetype
+map.replaceTypeOfCells(map.cellsWall, 'wall');
+map.replaceTypeOfCells(map.cellsBlock, 'block');
 
 let players = [];
 players.push(new Player(5*map.cellSize,5*map.cellSize));

@@ -44,6 +44,6 @@ class Cell {
   set upperLeft(upperLeft)    { this._upperLeft = upperLeft; }
   set grid(grid)              { this._grid = grid; }
   set center(center)          { this._center = center; }
-  set $elmt($elmt)            { this._$elmt = $elmt; }
+  set $elmt($elmt)            { console.log("ALLO");this._$elmt = $elmt; }
 
 }

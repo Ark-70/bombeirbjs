@@ -1,36 +1,38 @@
 const DB_MAP = 1;
 
 class Map {
-  $elmt;
-  gridWidth;
-  gridHeight;
-  height;
-  width;
-  cells;
+  _$elmt;
+  _gridWidth;
+  _gridHeight;
+  _height;
+  _width;
+  _cells;
+  _cellSize;
 
   constructor($map, gridWidth, gridHeight) {
-    this.$elmt = $map;
-    this.gridWidth = gridWidth;
-    this.gridHeight = gridHeight;
-    this.height = getUsableHeight(gridHeight);
-    this.width = getUsableWidth(gridWidth);
-    this.cellSize = this.height/gridHeight;//marche tant que height==width
+    console.log($map);
+    this._$elmt = $map;
+    this._gridWidth = gridWidth;
+    this._gridHeight = gridHeight;
+    this._height = getUsableHeight(gridHeight);
+    this._width = getUsableWidth(gridWidth);
+    this._cellSize = this.height/gridHeight;//marche tant que height==width
     this.constructGridCells(this.cells);
-    this.cellsWall = [[8, 12], [2, 5], [10, 4], [12, 6], [6, 6], [7, 1]];
-    this.cellsBlock = [[10, 12], [4, 5], [8, 4], [6,9], [10,7], [4,1], [11,1], [2,10]];
+    this._cellsWall = [[8, 12], [2, 5], [10, 4], [12, 6], [6, 6], [7, 1]];
+    this._cellsBlock = [[10, 12], [4, 5], [8, 4], [6,9], [10,7], [4,1], [11,1], [2,10]];
     // this.replaceTypeOfCells(this.cellsBlock, 'block');
     // this.replaceTypeOfCells(this.cellsWall, 'wall');
   }
 
   constructGridCells(cells){
-    this.cells = [];
+    this._cells = [];
     for (let yG=0; yG<gridHeight; yG++) {
       let tmpTabAllY = [];
       for (let xG=0; xG<gridWidth; xG++) {
-        let tmpCell = new Cell(xG, yG, this.cellSize);
+        let tmpCell = new Cell(xG, yG, this._cellSize);
         tmpTabAllY.push(tmpCell);
       }
-      this.cells.push(tmpTabAllY);
+      this._cells.push(tmpTabAllY);
     }
   }
     // let cellsDom = $('.cell').toArray();
@@ -50,12 +52,12 @@ class Map {
   constructForeCell(xG, yG, type, foreground=true){
     // let $tmpCell = domAddForeCell(xG, yG, type);
     let tmpCell = new Cell(xG, yG, this.cellSize, type, isForeground=true);
-    this.cells.push(tmpCell);
+    this._cells.push(tmpCell);
   }
 
   getCellAt(x, y){
-    console.log("get cell at", this.cells, x, y);
-    return this.cells[x][y];
+    console.log("get cell at", this._cells, x, y);
+    return this._cells[x][y];
   }
   getCellTypeAt(x, y){
     let tmpCell = this.getCellAt(x, y);
@@ -64,7 +66,7 @@ class Map {
 
   replaceTypeOfCells(cellsPos, type){
     for (let pos of cellsPos) {
-      this.cells[pos[0]][pos[1]].changeType(type);
+      this._cells[pos[0]][pos[1]].changeType(type);
     }
   }
 
@@ -121,9 +123,10 @@ class Map {
     return offset;
   }
 
-  getCellSize(){
-    return this.cellSize;
-  }
+  get cellSize(){ return this._cellSize; }
+  get cellsWall(){ return this._cellsWall; }
+  get cellsBlock(){ return this._cellsBlock; }
+
 
   static innerDistanceBweenCells(cell1, cell2){
     // cell.pos, .width
