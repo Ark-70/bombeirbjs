@@ -10,15 +10,16 @@ let map = new Map($('.map'), gridWidth, gridHeight);
 // map.constructCells();
 
 let dom = new Dom();
-console.log("mais putain");
-dom.createMapDom(map.cells, gridWidth, gridHeight, getUsableHeight(gridHeight));
-console.log("bordel");
+
+let gameSize = getUsableHeight(gridHeight);
+dom.createMapDom(map.cells, gridWidth, gridHeight, gameSize);
 
 map.replaceTypeOfCells(map.cellsWall, 'wall');
 map.replaceTypeOfCells(map.cellsBlock, 'block');
 
 let players = [];
-players.push(new Player(5*map.cellSize,5*map.cellSize));
+let tileSize = gameSize/gridHeight;
+players.push(new Player(5,5,tileSize));
 
 
 
@@ -26,9 +27,9 @@ function gameUpdate(){
   for (player of players) {
     player.update();
   }
-  for (bomb of bombs){
-    bomb.update();
-  }
+  // for (bomb of bombs){
+  //   bomb.update();
+  // }
   gameDraw();
 }
 
@@ -36,11 +37,11 @@ function gameDraw(){
   for (player of players) {
     player.display();
   }
-  for (bomb of bombs){
-    bomb.display();
-  }
+  // for (bomb of bombs){
+  //   bomb.display();
+  // }
   IHMDebug(players[0], map);
 }
 
-setInterval(gameUpdate, 10);
-// draw();
+// setInterval(gameUpdate, 10);
+gameUpdate();

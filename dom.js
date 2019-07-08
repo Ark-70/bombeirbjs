@@ -18,10 +18,7 @@ class Dom {
     for (let i=0; i<nbHeight ; i++) {
       for (let j=0; j<nbWidth ; j++) {
         let $cell = $(document.createElement('div')).addClass('cell').addClass('cell--empty').data('x', j).data('y', i);
-        console.log("alloZ");
-        console.log(cells);
         cells[i][j].$elmt = $cell;
-        console.log("alloV");
         $('.map').append($cell);
       }
     }

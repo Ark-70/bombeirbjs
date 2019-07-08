@@ -12,9 +12,13 @@ class Cell {
     this._size = cellSize;
     // this._gridX = $elmt.data('x');
     // this._gridY = $elmt.data('y');
-    this._corner = {x:this._gridX*cellSize, y:this._gridY*cellSize};
-    this._center = {x:this._corner.x+this._size/2, y:this._corner.y+this._size/2};
+    this._grid =      {x:xG, y:yG};
+    this._upperLeft = {x:this._grid.x*cellSize, y:this._grid.y*cellSize};
+    this._center =    {x:this._upperLeft.x+this._size/2, y:this._upperLeft.y+this._size/2};
     this._type = type;
+    if(type=='player'){
+      console.log(this._grid, this._upperLeft, this._center);
+    }
   }
 
 
@@ -39,11 +43,13 @@ class Cell {
   get grid()      { return this._grid; }
   get center()    { return this._center; }
   get $elmt()     { return this._$elmt; }
+  get centerOffset()     { return this._centerOffset; }
 
-  set type(type)              { this._type = type; }
-  set upperLeft(upperLeft)    { this._upperLeft = upperLeft; }
-  set grid(grid)              { this._grid = grid; }
-  set center(center)          { this._center = center; }
-  set $elmt($elmt)            { console.log("ALLO");this._$elmt = $elmt; }
+  set type(type)                { this._type = type; }
+  set upperLeft(upperLeft)      { this._upperLeft = upperLeft; }
+  set grid(grid)                { this._grid = grid; }
+  set center(center)            { this._center = center; }
+  set $elmt($elmt)              { this._$elmt = $elmt; }
+  set centerOffset(centerOffset){ ;this._centerOffset = centerOffset; }
 
 }

@@ -16,7 +16,8 @@ class Map {
     this._gridHeight = gridHeight;
     this._height = getUsableHeight(gridHeight);
     this._width = getUsableWidth(gridWidth);
-    this._cellSize = this.height/gridHeight;//marche tant que height==width
+    this._cellSize = this._height/gridHeight;//marche tant que height==width
+    console.log(this._cellSize);
     this.constructGridCells(this.cells);
     this._cellsWall = [[8, 12], [2, 5], [10, 4], [12, 6], [6, 6], [7, 1]];
     this._cellsBlock = [[10, 12], [4, 5], [8, 4], [6,9], [10,7], [4,1], [11,1], [2,10]];
@@ -126,6 +127,7 @@ class Map {
   get cellSize(){ return this._cellSize; }
   get cellsWall(){ return this._cellsWall; }
   get cellsBlock(){ return this._cellsBlock; }
+  get cells(){ return this._cells; }
 
 
   static innerDistanceBweenCells(cell1, cell2){

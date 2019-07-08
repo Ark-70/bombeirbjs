@@ -6,7 +6,7 @@ const DOWN  = 40
 const DEBUG_PLAYER = 1;
 
 let focusIsOn=0;
-// 
+//
 // function debug(debugConst, ...vars){
 //   if(debugConst){
 //     console.log(...vars);
@@ -75,7 +75,7 @@ function IHMDebug(player, map){
     if($('.debug__xgrid').html()!=player.getGridX() && !focusIsOn)  $('.debug__xgrid').html(player.getGridX());
     if($('.debug__ygrid').html()!=player.getGridY() && !focusIsOn)  $('.debug__ygrid').html(player.getGridY());
 
-    $('.debug__cellsize').html(map.getCellSize());
+    $('.debug__cellsize').html(map.cellSize);
 }
 
 function areEqualTab(array1, array2){

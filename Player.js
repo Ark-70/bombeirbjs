@@ -1,22 +1,22 @@
 class Player{
-  cell;
+  _cell;
   maxSpeed;
   directions;// wantedMovement;
   goingDir;// movement;
 
   constructor(xG, yG, size, speed=3) {
     // super(x, y);
-    this.cell = new Cell(xG, yG, size, 'player');
+    this._cell = new Cell(xG, yG, size, 'player');
 
-    // this.x = x;
-    // this.y = y;
+    // this._cell.center.x = x;
+    // this._cell.center.y = y;
     // console.log(map.cellSize);
     // console.log($($('.cell')[0]).css('height'));
     // this.width = map.cellSize;
     // this.height = map.cellSize;
     // this.offsetFromCenter = {x:(-this.width/2), y:(-this.height/2)};
-    // this.x += map.cellSize/2;
-    // this.y += map.cellSize/2;
+    // this._cell.center.x += map.cellSize/2;
+    // this._cell.center.y += map.cellSize/2;
     this.maxSpeed = speed;
     this.keyDown = {'x':{'UP':0, 'DOWN':0}, 'y':{'LEFT':0, 'RIGHT':0}};
     // let gridPos = Map.posToGridPos(xG, yG);
@@ -47,8 +47,8 @@ class Player{
   wantToMove(){
       let nextPos = this.posAfterDir(this.directions);
       let obstacles = this.obstaclesOn(...nextPos);
-      let offsetToLine = Map.offsetToBeOnALine(this.y);
-      let offsetToCol = Map.offsetToBeOnACol(this.x);
+      let offsetToLine = Map.offsetToBeOnALine(this._cell.center.y);
+      let offsetToCol = Map.offsetToBeOnACol(this._cell.center.x);
       // console.log("nextPos", nextPos);
       // if(this.canTheyMove(...nextPos)){//METTRE TOUT LE TABLEAU
 
@@ -60,18 +60,18 @@ class Player{
         let objA = {posCtr:0, width:this.width}, objB = {posCtr:0, width:map.cellSize};
         //C'est ici que posCtr s'écrase même s'il y a une diagonale
         if(this.directions.x!=0) {
-            objA.posCtr = this.x; //gauche de l'objet A
+            objA.posCtr = this._cell.center.x; //gauche de l'objet A
             objB.posCtr = obstacles[0][0]*map.cellSize+map.cellSize/2; //droite de l'objet B
         }
         if(this.directions.y!=0) {
-            objA.posCtr = this.y; //gauche de l'objet A
+            objA.posCtr = this._cell.center.y; //gauche de l'objet A
             objB.posCtr = obstacles[0][1]*map.cellSize+map.cellSize/2; //droite de l'objet B
         }
         // let objs = this.getPosOfObjs()
         let distance = Map.innerDistanceBweenCells({pos:objA.posCtr, width:objA.width},{pos:objB.posCtr, width:objB.width});
 
 
-        // let distance = Map.innerDistanceBweenCells({pos:this.y, width:this.height},{pos:obstacles[0][1]*map.cellSize, width:map.cellSize});
+        // let distance = Map.innerDistanceBweenCells({pos:this._cell.center.y, width:this.height},{pos:obstacles[0][1]*map.cellSize, width:map.cellSize});
         console.log("distance et maxspeed",distance, this.maxSpeed);
         if( (-this.maxSpeed)<distance && distance<this.maxSpeed ){//TODO A CHANGER CA, C'EST BIZARRE QUE CE CAS SE TRAITE QUE MAINTENANT
           console.log("Need to snap on obstacle");
@@ -87,13 +87,13 @@ class Player{
             case 'UP':
             case 'DOWN':
               addPos.y = Math.abs(distance);
-              // console.log("On a distance = "+distance+" et on move ("+this.x+", "+this.y+distance+")");
+              // console.log("On a distance = "+distance+" et on move ("+this._cell.center.x+", "+this._cell.center.y+distance+")");
               break;
           }
-          this.move(this.x+addPos.x, this.y+addPos.y);
+          this.move(this._cell.center.x+addPos.x, this._cell.center.y+addPos.y);
         }
       }//else{
-        // this.goingDir = Map.closestLine(this.y);
+        // this.goingDir = Map.closestLine(this._cell.center.y);
         // this.moveInGoingDir();
       // }
       // }else if(!isTouchingObstacles(obstacles)){
@@ -167,21 +167,21 @@ class Player{
   posAfterDir(dir, ajustedSpeed=undefined){
     let speedToUse = (ajustedSpeed==undefined) ? this.maxSpeed : ajustedSpeed;
 
-    let newX = this.x, newY = this.y;
+    let newX = this._cell.center.x, newY = this._cell.center.y;
     switch (dir.x) {
       case 'LEFT':
-        newX = this.x - speedToUse;
+        newX = this._cell.center.x - speedToUse;
       break;
       case 'RIGHT':
-        newX = this.x + speedToUse;
+        newX = this._cell.center.x + speedToUse;
       break;
     }
     switch(dir.y){
       case 'UP':
-        newY = this.y - speedToUse;
+        newY = this._cell.center.y - speedToUse;
       break;
       case 'DOWN':
-        newY = this.y + speedToUse;
+        newY = this._cell.center.y + speedToUse;
       break;
     }
     return [newX, newY];
@@ -194,29 +194,29 @@ class Player{
   //     speedToUse = this.maxSpeed;
   //   }
   //
-  //   let newX = this.x, newY = this.y;
+  //   let newX = this._cell.center.x, newY = this._cell.center.y;
   //   switch (this.goingDir.x) {
   //     case 'LEFT':
-  //       newX = this.x - speedToUse;
+  //       newX = this._cell.center.x - speedToUse;
   //     break;
   //     case 'RIGHT':
-  //       newX = this.x + speedToUse;
+  //       newX = this._cell.center.x + speedToUse;
   //     break;
   //   }
   //   switch(this.goingDir.y){
   //     case 'UP':
-  //       newY = this.y - speedToUse;
+  //       newY = this._cell.center.y - speedToUse;
   //     break;
   //     case 'DOWN':
-  //       newY = this.y + speedToUse;
+  //       newY = this._cell.center.y + speedToUse;
   //     break;
   //   }
   //   this.move(newX, newY);
   // }
 
   move(x, y){
-    this.x = x;
-    this.y = y;
+    this._cell.center.x = x;
+    this._cell.center.y = y;
     let gridPos = Map.posToGridPos(x, y);
     this.gridPos.x = gridPos[0];
     this.gridPos.y = gridPos[1];
@@ -224,8 +224,11 @@ class Player{
   }
 
   display(){
-    $('.player').css('left',this.x+this.offsetFromCenter.x);
-    $('.player').css('top',this.y+this.offsetFromCenter.y);
+    console.log(this);
+    console.log(this._cell.center);
+    console.log(this._cell.center.x);
+    $('.player').css('left',this._cell.upperLeft.x);
+    $('.player').css('top',this._cell.upperLeft.y);
     // $($('.cell')[z]).css('background-color', 'black');
     // $($('.cell')[z]).addClass('cell--player');
 
@@ -251,8 +254,8 @@ class Player{
 
 /* WITH OBSTACLES */
   redirectMove(dir){
-    let offsetToLine = Map.offsetToBeOnALine(this.y);
-    let offsetToCol = Map.offsetToBeOnACol(this.x);
+    let offsetToLine = Map.offsetToBeOnALine(this._cell.center.y);
+    let offsetToCol = Map.offsetToBeOnACol(this._cell.center.x);
 
     if(dir=='LEFT' || dir=='RIGHT'){
       if(!offsetToLine){
@@ -260,9 +263,9 @@ class Player{
         this.moveInGoingDir();
       }else if(offsetToLine<this.maxSpeed){
         // console.log("snapping into", offsetToLine);
-        this.move(this.x, this.y+offsetToLine);
+        this.move(this._cell.center.x, this._cell.center.y+offsetToLine);
       }else{
-        this.goingDir = Map.closestLine(this.y);
+        this.goingDir = Map.closestLine(this._cell.center.y);
         this.moveInGoingDir();
       }
     }else if(dir=='UP' || dir=='DOWN'){
@@ -270,10 +273,10 @@ class Player{
         this.goingDir = dir;
         this.moveInGoingDir();
       }else if(offsetToCol<this.maxSpeed){
-        // console.log("trying to snap !","this.x",this.x, "+ offsetToCol", offsetToCol, " = ", this.x+offsetToCol);
-        this.move(this.x+offsetToCol, this.y);
+        // console.log("trying to snap !","this._cell.center.x",this._cell.center.x, "+ offsetToCol", offsetToCol, " = ", this._cell.center.x+offsetToCol);
+        this.move(this._cell.center.x+offsetToCol, this._cell.center.y);
       }else{
-        this.goingDir = Map.closestCol(this.x);
+        this.goingDir = Map.closestCol(this._cell.center.x);
         this.moveInGoingDir();
       }
     }
@@ -281,8 +284,8 @@ class Player{
 
 // /* WITH OBSTACLES */
 //   // wantToMove(dir){
-//   //   let offsetToLine = Map.offsetToBeOnALine(this.y);
-//   //   let offsetToCol = Map.offsetToBeOnACol(this.x);
+//   //   let offsetToLine = Map.offsetToBeOnALine(this._cell.center.y);
+//   //   let offsetToCol = Map.offsetToBeOnACol(this._cell.center.x);
 //   //
 //   //   if(dir=='LEFT' || dir=='RIGHT'){
 //   //     if(!offsetToLine){
@@ -290,9 +293,9 @@ class Player{
 //   //       this.moveInGoingDir();
 //   //     }else if(offsetToLine<this.maxSpeed){
 //   //       // console.log("snapping into", offsetToLine);
-//   //       this.move(this.x, this.y+offsetToLine);
+//   //       this.move(this._cell.center.x, this._cell.center.y+offsetToLine);
 //   //     }else{
-//   //       this.goingDir = Map.closestLine(this.y);
+//   //       this.goingDir = Map.closestLine(this._cell.center.y);
 //   //       this.moveInGoingDir();
 //   //     }
 //   //   }else if(dir=='UP' || dir=='DOWN'){
@@ -300,26 +303,29 @@ class Player{
 //   //       this.goingDir = dir;
 //   //       this.moveInGoingDir();
 //   //     }else if(offsetToCol<this.maxSpeed){
-//   //       // console.log("trying to snap !","this.x",this.x, "+ offsetToCol", offsetToCol, " = ", this.x+offsetToCol);
-//   //       this.move(this.x+offsetToCol, this.y);
+//   //       // console.log("trying to snap !","this._cell.center.x",this._cell.center.x, "+ offsetToCol", offsetToCol, " = ", this._cell.center.x+offsetToCol);
+//   //       this.move(this._cell.center.x+offsetToCol, this._cell.center.y);
 //   //     }else{
-//   //       this.goingDir = Map.closestCol(this.x);
+//   //       this.goingDir = Map.closestCol(this._cell.center.x);
 //   //       this.moveInGoingDir();
 //   //     }
 //   //   }
 //   // }
 
 
-  updateX(x){ this.x = x; }
-  updateY(y){ this.y = y; }
+
+
+
+  updateX(x){ this._cell.center.x = x; }
+  updateY(y){ this._cell.center.y = y; }
   setStateX(x){ this.state['x'] = x; }
   setStateY(y){ this.state['y'] = y; }
   setKeyDown(axe, keyStr, value=1){ this.keyDown[axe][keyStr]=value; }
   setDirection(axe, dir){ this.directions[axe] = dir; }
   getDirection(axe){ return this.directions[axe]; }
-  getPosX(){ return this.x; }
-  getPosY(){ return this.y; }
-  getGridX(){ return this.gridPos.x; }
-  getGridY(){ return this.gridPos.y; }
+  getPosX(){ return this._cell.center.x; }
+  getPosY(){ return this._cell.center.y; }
+  getGridX(){ return this._cell.grid.x; }
+  getGridY(){ return this._cell.grid.y; }
   getKeyDown(){ return this.keyDown; }
 }
