@@ -15,6 +15,7 @@ class Dom {
     $('.map').css('max-height', squareSize+'px');
     $('.map').css('max-width', squareSize+'px');
 
+    $('.map').css('grid-template-columns', 'repeat('+nbHeight+',1fr)');
     for (let i=0; i<nbHeight ; i++) {
       for (let j=0; j<nbWidth ; j++) {
         let $cell = $(document.createElement('div')).addClass('cell').addClass('cell--empty').data('x', j).data('y', i);
@@ -34,14 +35,13 @@ class Dom {
     }
   }
 
-  domAddForeCell(xG, yG, type){
+  static domCreateForeCell(xG, yG, type, cellSize){
     let $tmpCell = $(document.createElement('div')).addClass('forecell').addClass('cell--'+type).data('x', xG).data('y', yG);
     $('.map').append($tmpCell);
-    console.log("ALLO FQFNEFS");
-    resizeForegroundCells();
-    let sizeCell = Math.round($($('.cell')[0]).css('height').replace('px',''));
-    $tmpCell.css('left',xG*sizeCell+'px');
-    $tmpCell.css('top',yG*sizeCell+'px');
+    $tmpCell.css('left', xG*cellSize+'px');
+    $tmpCell.css('top', yG*cellSize+'px');
+    $tmpCell.css('width', cellSize+'px');
+    $tmpCell.css('height', cellSize+'px');
     return $tmpCell;
   }
 
@@ -53,19 +53,12 @@ class Dom {
     $map.css('max-height', pixelPerfectSquare+'px');
     console.log("size map", pixelPerfectSquare);
 
-    cellSize = $('')
+    // cellSize = $('')
     $('.display').css('max-width', pixelPerfectSquare+'px');
     $('.display').css('max-height', pixelPerfectSquare+'px');
 
-    resizeForegroundCells();
+    // resizeForegroundCells(); $('.forecell').css('height')
     return $map;
   }
 
-  resizeForegroundCells(){
-    let size = Math.round($($('.cell')[0]).css('height').replace('px',''));
-    console.log("size cell", size);
-    let border = 1;
-    $('.forecell').css('height', (size)+'px');
-    $('.forecell').css('width', (size)+'px');
-  }
 }

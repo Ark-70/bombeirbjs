@@ -6,7 +6,7 @@ class Player{
 
   constructor(xG, yG, size, speed=3) {
     // super(x, y);
-    this._cell = new Cell(xG, yG, size, 'player');
+    this._cell = new Cell(xG, yG, size, 'player', true);
 
     // this._cell.center.x = x;
     // this._cell.center.y = y;
@@ -18,7 +18,7 @@ class Player{
     // this._cell.center.x += map.cellSize/2;
     // this._cell.center.y += map.cellSize/2;
     this.maxSpeed = speed;
-    this.keyDown = {'x':{'UP':0, 'DOWN':0}, 'y':{'LEFT':0, 'RIGHT':0}};
+    this.keyDown = {'x':{'LEFT':0, 'RIGHT':0}, 'y':{'UP':0, 'DOWN':0}};
     // let gridPos = Map.posToGridPos(xG, yG);
     // this.gridPos = {'x':gridPos[0], 'y':gridPos[1]};
     this.directions = {'x':0, 'y':0};
@@ -26,7 +26,6 @@ class Player{
   }
 
   update(){
-    // if()
     if (this.directions.x!=0 || this.directions.y!=0){
       this.wantToMove();
     }
@@ -118,11 +117,12 @@ class Player{
   }
 
   getCornersOfPos(x, y){
-    let off = this.offsetFromCenter;
-    return [[x-off.x-1, y-off.y-1],
-            [x+off.x+1, y-off.y-1],
-            [x+off.x+1, y+off.y+1],
-            [x-off.x-1, y+off.y+1]];
+    let off = this._cell.centerOffset;
+    console.log(x, off);
+    return [[x-off-1, y-off-1],
+            [x+off+1, y-off-1],
+            [x+off+1, y+off+1],
+            [x-off-1, y+off+1]];
   }
 
   obstaclesOn(x, y){
@@ -152,7 +152,8 @@ class Player{
     // console.log("On veut voir les types de : ", ...casesMarchéesDessus[0],"-", ...casesMarchéesDessus[1],"-", ...casesMarchéesDessus[2],"-", ...casesMarchéesDessus[3]);
     for (let cellPos of casesMarchéesDessus) {
       let tmpCell = map.getCellAt(...cellPos);
-      if(tmpCell.getType()!='empty'){
+      console.log(tmpCell);
+      if(tmpCell.type!='empty'){
         // collision=1;
         obstacles.push([...cellPos]);
         // console.log("cornersOfPlayer", cornersOfPlayer);
@@ -217,18 +218,12 @@ class Player{
   move(x, y){
     this._cell.center.x = x;
     this._cell.center.y = y;
-    let gridPos = Map.posToGridPos(x, y);
-    this.gridPos.x = gridPos[0];
-    this.gridPos.y = gridPos[1];
-    // gridPos[1]
+    this._cell.grid = Map.posToGridPos(x, y)
   }
 
   display(){
-    console.log(this);
-    console.log(this._cell.center);
-    console.log(this._cell.center.x);
-    $('.player').css('left',this._cell.upperLeft.x);
-    $('.player').css('top',this._cell.upperLeft.y);
+    this._cell.$elmt.css('left',this._cell.upperLeft.x);
+    this._cell.$elmt.css('top',this._cell.upperLeft.y);
     // $($('.cell')[z]).css('background-color', 'black');
     // $($('.cell')[z]).addClass('cell--player');
 
@@ -320,7 +315,9 @@ class Player{
   updateY(y){ this._cell.center.y = y; }
   setStateX(x){ this.state['x'] = x; }
   setStateY(y){ this.state['y'] = y; }
-  setKeyDown(axe, keyStr, value=1){ this.keyDown[axe][keyStr]=value; }
+  setKeyDown(axe, keyStr, value=1){
+    this.keyDown[axe][keyStr]=value;
+  }
   setDirection(axe, dir){ this.directions[axe] = dir; }
   getDirection(axe){ return this.directions[axe]; }
   getPosX(){ return this._cell.center.x; }

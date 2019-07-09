@@ -17,3 +17,6 @@
 # package Atom
 
   auto all align indent cursors
+
+
+//need updateAllPosFrom()

@@ -16,8 +16,10 @@ class Cell {
     this._upperLeft = {x:this._grid.x*cellSize, y:this._grid.y*cellSize};
     this._center =    {x:this._upperLeft.x+this._size/2, y:this._upperLeft.y+this._size/2};
     this._type = type;
-    if(type=='player'){
-      console.log(this._grid, this._upperLeft, this._center);
+    this._centerOffset = cellSize/2;
+    if(isForeground){
+      console.log("allo1");
+      this._$elmt = Dom.domCreateForeCell(xG, yG, type, cellSize);
     }
   }
 
@@ -30,13 +32,26 @@ class Cell {
   }
 
   updateDomType(oldType, newType){
-    // console.log(oldType);
-    // console.log(newType);
-    // console.log(this._$elmt);
     this._$elmt.removeClass(`cell--${oldType}`);
     this._$elmt.addClass(`cell--${newType}`);
   }
 
+  updateAllPosFrom(base){
+    switch (base) {
+      case 'center':
+        this._upperLeft = Object.values(this._center).map(x => x-this._centerOffset);
+        // this._grid = this._center +
+        break;
+      case 'grid':
+        break;
+
+      case 'upperLeft':
+        break;
+
+      default:
+
+    }
+  }
 
   get type()      { return this._type; }
   get upperLeft() { return this._upperLeft; }

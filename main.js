@@ -19,7 +19,7 @@ map.replaceTypeOfCells(map.cellsBlock, 'block');
 
 let players = [];
 let tileSize = gameSize/gridHeight;
-players.push(new Player(5,5,tileSize));
+players.push(new Player(5, 5, tileSize));
 
 
 
@@ -43,5 +43,5 @@ function gameDraw(){
   IHMDebug(players[0], map);
 }
 
-// setInterval(gameUpdate, 10);
-gameUpdate();
+setInterval(gameUpdate, 1000);
+// gameUpdate();

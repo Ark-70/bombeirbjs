@@ -22,7 +22,6 @@ function traiterEventKeyPressed(event){
   let key = event.key;
   switch (key) {
     case ' ':
-      console.log("ALLO0");
       players[0].plantBomb();
       break;
     default:
