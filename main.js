@@ -6,19 +6,21 @@ const fpsLow = 25;
 const gridWidth = 14;
 const gridHeight = 14;
 
+const gameSize = getUsableHeight(gridHeight);
+const tileSize = gameSize/gridHeight;
+
 let map = new Map($('.map'), gridWidth, gridHeight);
 // map.constructCells();
 
 let dom = new Dom();
 
-let gameSize = getUsableHeight(gridHeight);
+
 dom.createMapDom(map.cells, gridWidth, gridHeight, gameSize);
 
 map.replaceTypeOfCells(map.cellsWall, 'wall');
 map.replaceTypeOfCells(map.cellsBlock, 'block');
 
 let players = [];
-let tileSize = gameSize/gridHeight;
 players.push(new Player(5, 5, tileSize));
 
 

@@ -135,7 +135,7 @@ class Player{
     for (let corner of cornersOfPlayer) {
       // console.log("corner :", ...corner);
       let tmpGrid = Map.posToGridPos(...corner);
-      let tmpTile = [ ...tmpGrid ];
+      let tmpTile = [tmpGrid.x, tmpGrid.y ];
       let alreadyInTab = 0;
       for (let tile of casesMarchéesDessus) {
         if(areEqualTab(tile, tmpTile)){
@@ -216,12 +216,15 @@ class Player{
   // }
 
   move(x, y){
-    this._cell.center.x = x;
-    this._cell.center.y = y;
-    this._cell.grid = Map.posToGridPos(x, y)
+    console.log(x, y);
+    this._cell.center = {'x':x, 'y':y};
+    this._cell.updateAllPosFrom('center');
+    console.log(x, y);
+    // this._cell.grid = Map.posToGridPos(x, y);
   }
 
   display(){
+    console.log(this._cell);
     this._cell.$elmt.css('left',this._cell.upperLeft.x);
     this._cell.$elmt.css('top',this._cell.upperLeft.y);
     // $($('.cell')[z]).css('background-color', 'black');

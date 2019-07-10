@@ -37,10 +37,14 @@ class Cell {
   }
 
   updateAllPosFrom(base){
+    console.log("updated from "+base);
     switch (base) {
       case 'center':
-        this._upperLeft = Object.values(this._center).map(x => x-this._centerOffset);
-        // this._grid = this._center +
+        console.log(this._center);
+        for (const [key, value] of Object.entries(this._center)){
+          this._upperLeft[key] = value-this._centerOffset;
+        }
+        this._grid = Map.posToGridPos(this._center);
         break;
       case 'grid':
         break;

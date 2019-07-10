@@ -72,18 +72,10 @@ class Map {
   }
 
   static posToGridPos(x, y){
-    let sizeCell = Math.round($($('.cell')[0]).css('height').replace('px',''));
-
-    // let remainX = (x-Math.floor(x/sizeCell))%sizeCell;
-    // let remainY = (y-Math.floor(y/sizeCell))%sizeCell;
-    // let gridX = Math.floor( (x-remainX)/(sizeCell+1) );
-    // let gridY = Math.floor( (y-remainY)/(sizeCell+1) );
-    let gridX = Math.floor( x/sizeCell );
-    let gridY = Math.floor( y/sizeCell );
-
-    // console.log(`ALLO. y=[${y}], cellSize=[${sizeCell}], remainY=[${remainY}], gridY=[${gridY}]`);
-    // if(DB_MAP) console.log(`DBMAP y=[${y}], x=[${x}], cellSize=[${sizeCell}], remainY=[${remainY}], gridY=[${gridY}], gridX=[${gridX}]`);
-    return [gridX, gridY];
+    let gridX = Math.floor( x/tileSize );
+    let gridY = Math.floor( y/tileSize );
+    let grid = {'x':gridX, 'y':gridY};
+    return grid;
   }
 
   static closestCol(x){
