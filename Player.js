@@ -24,7 +24,6 @@ class Player{
     this.directions = {'x':0, 'y':0};
     this.goingDir = this.directions;
   }
-
   update(){
     if (this.directions.x!=0 || this.directions.y!=0){
       this.wantToMove();
@@ -56,7 +55,7 @@ class Player{
         console.log("moved");
       }else{
         console.log("thereisobstacle", obstacles);
-        let objA = {posCtr:0, width:this.width}, objB = {posCtr:0, width:map.cellSize};
+        let objA = {posCtr:0, width:this._cell.size}, objB = {posCtr:0, width:map.cellSize};
         //C'est ici que posCtr s'écrase même s'il y a une diagonale
         if(this.directions.x!=0) {
             objA.posCtr = this._cell.center.x; //gauche de l'objet A
@@ -67,6 +66,7 @@ class Player{
             objB.posCtr = obstacles[0][1]*map.cellSize+map.cellSize/2; //droite de l'objet B
         }
         // let objs = this.getPosOfObjs()
+        console.log("objA width",objA.width);
         let distance = Map.innerDistanceBweenCells({pos:objA.posCtr, width:objA.width},{pos:objB.posCtr, width:objB.width});
 
 
@@ -224,7 +224,6 @@ class Player{
   }
 
   display(){
-    console.log(this._cell);
     this._cell.$elmt.css('left',this._cell.upperLeft.x);
     this._cell.$elmt.css('top',this._cell.upperLeft.y);
     // $($('.cell')[z]).css('background-color', 'black');

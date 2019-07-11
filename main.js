@@ -45,5 +45,5 @@ function gameDraw(){
   IHMDebug(players[0], map);
 }
 
-setInterval(gameUpdate, 1000);
+setInterval(gameUpdate, 60);
 // gameUpdate();
