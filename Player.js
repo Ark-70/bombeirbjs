@@ -44,6 +44,9 @@ class Player{
 
   wantToMove(){
       let nextPos = this.posAfterDir(this.directions);
+      console.log("ACTUAL POS");
+      let obstacles0 = this.obstaclesOn(...Object.values(this._cell.center));
+      console.log("NEXT POS");
       let obstacles = this.obstaclesOn(...nextPos);
       let offsetToLine = Map.offsetToBeOnALine(this._cell.center.y);
       let offsetToCol = Map.offsetToBeOnACol(this._cell.center.x);
@@ -72,7 +75,7 @@ class Player{
 
         // let distance = Map.innerDistanceBweenCells({pos:this._cell.center.y, width:this.height},{pos:obstacles[0][1]*map.cellSize, width:map.cellSize});
         console.log("distance et maxspeed",distance, this.maxSpeed);
-        if( (-this.maxSpeed)<distance && distance<this.maxSpeed ){//TODO A CHANGER CA, C'EST BIZARRE QUE CE CAS SE TRAITE QUE MAINTENANT
+        if( (-this.maxSpeed)<distance && distance<this.maxSpeed){//TODO A CHANGER CA, C'EST BIZARRE QUE CE CAS SE TRAITE QUE MAINTENANT
           console.log("Need to snap on obstacle");
         // TODO c'est chelou qu'un jour j'ai une distance = -1 mais bon ballec maintenant j'ai bodge pour que ça marche alors ça va pas me faire chier longtemps
           let addPos = {x:0,y:0};
@@ -90,6 +93,8 @@ class Player{
               break;
           }
           this.move(this._cell.center.x+addPos.x, this._cell.center.y+addPos.y);
+        }else if(distance == 0){
+          console.log("allooooo je suis québlo");
         }
       }//else{
         // this.goingDir = Map.closestLine(this._cell.center.y);
@@ -118,11 +123,10 @@ class Player{
 
   getCornersOfPos(x, y){
     let off = this._cell.centerOffset;
-    console.log(x, off);
-    return [[x-off-1, y-off-1],
-            [x+off+1, y-off-1],
-            [x+off+1, y+off+1],
-            [x-off-1, y+off+1]];
+    return [[x-off+1, y-off+1],
+            [x+off-1, y-off+1],
+            [x+off-1, y+off-1],
+            [x-off+1, y+off-1]];
   }
 
   obstaclesOn(x, y){
@@ -130,12 +134,11 @@ class Player{
     // optimisable : que les 8 cells autour sinon osef
     let cornersOfPlayer = this.getCornersOfPos(x, y);
     let casesMarchéesDessus = [];
-    console.log("");
-    console.log("corners", cornersOfPlayer);
+    console.log("corners", cornersOfPlayer.toString());
     for (let corner of cornersOfPlayer) {
       // console.log("corner :", ...corner);
       let tmpGrid = Map.posToGridPos(...corner);
-      let tmpTile = [tmpGrid.x, tmpGrid.y ];
+      let tmpTile = [tmpGrid.x, tmpGrid.y];
       let alreadyInTab = 0;
       for (let tile of casesMarchéesDessus) {
         if(areEqualTab(tile, tmpTile)){
@@ -151,15 +154,10 @@ class Player{
 
     // console.log("On veut voir les types de : ", ...casesMarchéesDessus[0],"-", ...casesMarchéesDessus[1],"-", ...casesMarchéesDessus[2],"-", ...casesMarchéesDessus[3]);
     for (let cellPos of casesMarchéesDessus) {
-      let tmpCell = map.getCellAt(...cellPos);
-      console.log(tmpCell);
-      if(tmpCell.type!='empty'){
+      console.log('checking cellPos', ...cellPos, map.getCellTypeAt(...cellPos));
+      if(map.getCellTypeAt(...cellPos)!='empty'){
         // collision=1;
         obstacles.push([...cellPos]);
-        // console.log("cornersOfPlayer", cornersOfPlayer);
-        // console.log(casesMarchéesDessus);
-        // console.log(...cellPos);
-        // console.log(tmpCell.$elmt[0]);
       }
     }
     return obstacles;
@@ -254,23 +252,22 @@ class Player{
     let offsetToLine = Map.offsetToBeOnALine(this._cell.center.y);
     let offsetToCol = Map.offsetToBeOnACol(this._cell.center.x);
 
-    if(dir=='LEFT' || dir=='RIGHT'){
+    if(dir.x=='LEFT' || dir.x=='RIGHT'){
       if(!offsetToLine){
         this.goingDir = dir;
         this.moveInGoingDir();
       }else if(offsetToLine<this.maxSpeed){
-        // console.log("snapping into", offsetToLine);
         this.move(this._cell.center.x, this._cell.center.y+offsetToLine);
       }else{
         this.goingDir = Map.closestLine(this._cell.center.y);
         this.moveInGoingDir();
       }
-    }else if(dir=='UP' || dir=='DOWN'){
+    }
+    if(dir.y=='UP' || dir.y=='DOWN'){
       if(!offsetToCol){
         this.goingDir = dir;
         this.moveInGoingDir();
       }else if(offsetToCol<this.maxSpeed){
-        // console.log("trying to snap !","this._cell.center.x",this._cell.center.x, "+ offsetToCol", offsetToCol, " = ", this._cell.center.x+offsetToCol);
         this.move(this._cell.center.x+offsetToCol, this._cell.center.y);
       }else{
         this.goingDir = Map.closestCol(this._cell.center.x);

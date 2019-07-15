@@ -21,7 +21,7 @@ map.replaceTypeOfCells(map.cellsWall, 'wall');
 map.replaceTypeOfCells(map.cellsBlock, 'block');
 
 let players = [];
-players.push(new Player(5, 5, tileSize));
+players.push(new Player(5, 10, tileSize));
 
 
 

@@ -27,9 +27,9 @@ class Map {
 
   constructGridCells(cells){
     this._cells = [];
-    for (let yG=0; yG<gridHeight; yG++) {
+    for (let xG=0; xG<gridWidth; xG++) {
       let tmpTabAllY = [];
-      for (let xG=0; xG<gridWidth; xG++) {
+      for (let yG=0; yG<gridHeight; yG++) {
         let tmpCell = new Cell(xG, yG, this._cellSize);
         tmpTabAllY.push(tmpCell);
       }
@@ -57,12 +57,11 @@ class Map {
   }
 
   getCellAt(x, y){
-    console.log("get cell at", this._cells, x, y);
     return this._cells[x][y];
   }
   getCellTypeAt(x, y){
     let tmpCell = this.getCellAt(x, y);
-    return tmpCell.getType();
+    return tmpCell.type;
   }
 
   replaceTypeOfCells(cellsPos, type){

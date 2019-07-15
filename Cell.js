@@ -18,7 +18,6 @@ class Cell {
     this._type = type;
     this._centerOffset = cellSize/2;
     if(isForeground){
-      console.log("allo1");
       this._$elmt = Dom.domCreateForeCell(xG, yG, type, cellSize);
     }
   }

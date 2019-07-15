@@ -19,21 +19,21 @@ class Dom {
     for (let i=0; i<nbHeight ; i++) {
       for (let j=0; j<nbWidth ; j++) {
         let $cell = $(document.createElement('div')).addClass('cell').addClass('cell--empty').data('x', j).data('y', i);
-        cells[i][j].$elmt = $cell;
+        cells[j][i].$elmt = $cell;
         $('.map').append($cell);
       }
     }
   }
 
-  domAddCells(nbWidth, nbHeight){
-    // let nb = nbWidth*nbHeight;
-    for (let i=0; i<nbHeight ; i++) {
-      for (let j=0; j<nbWidth ; j++) {
-        jqCell = $(document.createElement('div')).addClass('cell').addClass('cell--empty').data('x', j).data('y', i);
-        $('.map').append(jqCell);
-      }
-    }
-  }
+  // domAddCells(nbWidth, nbHeight){
+  //   // let nb = nbWidth*nbHeight;
+  //   for (let i=0; i<nbHeight ; i++) {
+  //     for (let j=0; j<nbWidth ; j++) {
+  //       jqCell = $(document.createElement('div')).addClass('cell').addClass('cell--empty').data('x', j).data('y', i);
+  //       $('.map').append(jqCell);
+  //     }
+  //   }
+  // }
 
   static domCreateForeCell(xG, yG, type, cellSize){
     let $tmpCell = $(document.createElement('div')).addClass('forecell').addClass('cell--'+type).data('x', xG).data('y', yG);
