@@ -35,7 +35,7 @@ body{
   grid-auto-rows: 1fr;
 }
 
-/*MAKE IT SQUARE ONLY*/
+/*MAKE IT FORCED SQUARE SHAPE (BUT IT ADDS ONE INVINSIBLE SQUARE)*/
 .map::before {
   content: '';
   width: 0;
@@ -50,30 +50,58 @@ body{
 }
 
 /* Just to make the grid visible */
-.cell {
-  /* border: 1px white solid; */
-  border-radius: 25%;
+.cell, .forecell {
+  image-rendering: pixelated;
+  /* border-radius: 25%; */
 }
 .cell--empty{
   background: rgba(0,0,0,0.2);
+  background: url('assets/img/terrain.png') 1.6% 0.1%;
+  background-size: 7000%;
 }
 .cell--block{
   background: orange;
+  background: url('assets/img/terrain.png') 4.6% 0.1%;
+  background-size: 7000%;
+
 }
 .cell--wall{
   background: FireBrick;
+  /* background: url('assets/img/terrain.png') -2.5px -2.5px; */
+  background: url('assets/img/terrain.png') 0.1% 0.1%;
+  background-size: 7000%;
 }
 .cell--bomb{
   background: grey;
 }
+
+
 .cell--player{
-  background: black;
+  /* background: black; */
+  }.cell--player .sprite{
+    padding:0;margin:0;width:100%;height:200%;
+
+    position:absolute;
+    right:0;
+    bottom:0;
+    background: url('assets/img/bomberman.png') 0% 0%;
+    background-size: 1000%;
+
+    }.cell--player .sprite.UP{
+      background-position: 0% 0%;
+    }.cell--player .sprite.RIGHT{
+      background-position: 0% 3.6%;
+    }.cell--player .sprite.DOWN{
+      background-position: 0% 7.2%;
+    }.cell--player .sprite.LEFT{
+      background-position: 0% 10.7%;
 }
+
 
 
 .forecell{
   /* border: 1px white solid; */
-  border-radius: 25%;
+  /* border-radius: 25%; */
   position:absolute;
   top:0;
   left:0;

@@ -5,37 +5,25 @@ class Player{
   goingDir;// movement;
 
   constructor(xG, yG, size, speed=3) {
-    // super(x, y);
     this._cell = new Cell(xG, yG, size, 'player', true);
-
-    // this._cell.center.x = x;
-    // this._cell.center.y = y;
-    // console.log(map.cellSize);
-    // console.log($($('.cell')[0]).css('height'));
-    // this.width = map.cellSize;
-    // this.height = map.cellSize;
-    // this.offsetFromCenter = {x:(-this.width/2), y:(-this.height/2)};
-    // this._cell.center.x += map.cellSize/2;
-    // this._cell.center.y += map.cellSize/2;
     this.maxSpeed = speed;
     this.keyDown = {'x':{'LEFT':0, 'RIGHT':0}, 'y':{'UP':0, 'DOWN':0}};
-    // let gridPos = Map.posToGridPos(xG, yG);
-    // this.gridPos = {'x':gridPos[0], 'y':gridPos[1]};
     this.directions = {'x':0, 'y':0};
     this.goingDir = this.directions;
   }
+
   update(){
-    if (this.directions.x!=0 || this.directions.y!=0){
+    if (this.wantingToMove()){
       this.wantToMove();
     }
   }
+
 
   plantBomb(){
     let xG = this.gridPos.x, yG = this.gridPos.y;
     if(map.getCellTypeAt(xG, yG)=='empty'){
       map.constructForeCell(xG, yG, 'bomb');
     }
-
   }
 
   canTheyMove(directions){
@@ -44,8 +32,6 @@ class Player{
 
   wantToMove(){
       let nextPos = this.posAfterDir(this.directions);
-      console.log("ACTUAL POS");
-      let obstacles0 = this.obstaclesOn(...Object.values(this._cell.center));
       console.log("NEXT POS");
       let obstacles = this.obstaclesOn(...nextPos);
       let offsetToLine = Map.offsetToBeOnALine(this._cell.center.y);
@@ -75,7 +61,7 @@ class Player{
 
         // let distance = Map.innerDistanceBweenCells({pos:this._cell.center.y, width:this.height},{pos:obstacles[0][1]*map.cellSize, width:map.cellSize});
         console.log("distance et maxspeed",distance, this.maxSpeed);
-        if( (-this.maxSpeed)<distance && distance<this.maxSpeed){//TODO A CHANGER CA, C'EST BIZARRE QUE CE CAS SE TRAITE QUE MAINTENANT
+        if(Math.abs(distance)<this.maxSpeed && distance!=0){
           console.log("Need to snap on obstacle");
         // TODO c'est chelou qu'un jour j'ai une distance = -1 mais bon ballec maintenant j'ai bodge pour que ça marche alors ça va pas me faire chier longtemps
           let addPos = {x:0,y:0};
@@ -95,24 +81,9 @@ class Player{
           this.move(this._cell.center.x+addPos.x, this._cell.center.y+addPos.y);
         }else if(distance == 0){
           console.log("allooooo je suis québlo");
+          // this.redirectMove(this.directions);
         }
-      }//else{
-        // this.goingDir = Map.closestLine(this._cell.center.y);
-        // this.moveInGoingDir();
-      // }
-      // }else if(!isTouchingObstacles(obstacles)){
-      //   snapOnIt();
-      // }else{
-      //   glide();
-      // }
-    // this.moveInGoingDir();
-    // if(dirX=='LEFT' || dirX=='RIGHT'){
-    //   this.goingDir.x = dirX;
-    //   this.moveInGoingDir();
-    // }if(dirY=='UP' || dirY=='DOWN'){
-    //   this.goingDir.y = dirY;
-    //   this.moveInGoingDir();
-    // }
+      }
   }
 
   isTouchingObstacles(obstacles){
@@ -224,8 +195,6 @@ class Player{
   display(){
     this._cell.$elmt.css('left',this._cell.upperLeft.x);
     this._cell.$elmt.css('top',this._cell.upperLeft.y);
-    // $($('.cell')[z]).css('background-color', 'black');
-    // $($('.cell')[z]).addClass('cell--player');
 
   }
 
@@ -252,6 +221,8 @@ class Player{
     let offsetToLine = Map.offsetToBeOnALine(this._cell.center.y);
     let offsetToCol = Map.offsetToBeOnACol(this._cell.center.x);
 
+    let nextPos = this.posAfterDir(this.directions);
+
     if(dir.x=='LEFT' || dir.x=='RIGHT'){
       if(!offsetToLine){
         this.goingDir = dir;
@@ -260,7 +231,7 @@ class Player{
         this.move(this._cell.center.x, this._cell.center.y+offsetToLine);
       }else{
         this.goingDir = Map.closestLine(this._cell.center.y);
-        this.moveInGoingDir();
+        this.move(...nextPos);
       }
     }
     if(dir.y=='UP' || dir.y=='DOWN'){
@@ -271,7 +242,7 @@ class Player{
         this.move(this._cell.center.x+offsetToCol, this._cell.center.y);
       }else{
         this.goingDir = Map.closestCol(this._cell.center.x);
-        this.moveInGoingDir();
+        this.move(...nextPos);
       }
     }
   }
@@ -307,6 +278,7 @@ class Player{
 //   // }
 
 
+  wantingToMove(){ return (this.directions.x!=0 || this.directions.y!=0) }
 
 
 
@@ -317,7 +289,17 @@ class Player{
   setKeyDown(axe, keyStr, value=1){
     this.keyDown[axe][keyStr]=value;
   }
-  setDirection(axe, dir){ this.directions[axe] = dir; }
+  setDirection(axe, dir){
+    this.directions[axe] = dir;
+    this._cell.$elmt.find('.sprite').removeClass('UP');
+    this._cell.$elmt.find('.sprite').removeClass('RIGHT');
+    this._cell.$elmt.find('.sprite').removeClass('DOWN');
+    this._cell.$elmt.find('.sprite').removeClass('LEFT');
+    // this.cell.$_elmt.removeClass('.'+dir);
+    this._cell.$elmt.find('.sprite').addClass(dir);
+  }
+
+
   getDirection(axe){ return this.directions[axe]; }
   getPosX(){ return this._cell.center.x; }
   getPosY(){ return this._cell.center.y; }
