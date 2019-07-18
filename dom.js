@@ -36,6 +36,7 @@ class Dom {
   // }
 
   static domCreateForeCell(xG, yG, type, cellSize){
+    console.log("ALLO");
     let $tmpCell = $(document.createElement('div')).addClass('forecell').addClass('cell--'+type).data('x', xG).data('y', yG);
     $tmpCell.append($(document.createElement('figure')).addClass('sprite'));
     $('.map').append($tmpCell);

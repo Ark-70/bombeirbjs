@@ -18,5 +18,5 @@
 
   auto all align indent cursors
 
-
 //need updateAllPosFrom()
+//need 2 globals only : tileSize & gridSize

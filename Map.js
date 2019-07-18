@@ -50,7 +50,7 @@ class Map {
     //   this.cells.push(tmpTabAllY);
     // }
 
-  constructForeCell(xG, yG, type, foreground=true){
+  constructForeCell(xG, yG, type, isForeground=true){
     // let $tmpCell = domAddForeCell(xG, yG, type);
     let tmpCell = new Cell(xG, yG, this.cellSize, type, isForeground=true);
     this._cells.push(tmpCell);

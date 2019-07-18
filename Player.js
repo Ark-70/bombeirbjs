@@ -3,26 +3,45 @@ class Player{
   maxSpeed;
   directions;// wantedMovement;
   goingDir;// movement;
+  _power;
+  _bombs;
 
-  constructor(xG, yG, size, speed=3) {
+  constructor(xG, yG, size, speed=3, power=1) {
     this._cell = new Cell(xG, yG, size, 'player', true);
+    this._animation = new Animation()
     this.maxSpeed = speed;
     this.keyDown = {'x':{'LEFT':0, 'RIGHT':0}, 'y':{'UP':0, 'DOWN':0}};
     this.directions = {'x':0, 'y':0};
     this.goingDir = this.directions;
+    this._power = power;
+    this._bombs = [];
+    this._size = size;
   }
 
   update(){
+
     if (this.wantingToMove()){
-      this.wantToMove();
+      let nextPos = this.posAfterDir(this.directions);
+      let obstacles = this.obstaclesOn(...nextPos);
+
+      if(obstacles == 0){
+        this.move(...nextPos);
+      }else{ //obstacles nearby
+        this.wantToMove(obstacles);
+      }
+    }
+
+    for (let bomb of this._bombs) {
+      bomb.update();
     }
   }
 
 
   plantBomb(){
-    let xG = this.gridPos.x, yG = this.gridPos.y;
+    let xG = this._cell.grid.x, yG = this._cell.grid.y;
     if(map.getCellTypeAt(xG, yG)=='empty'){
-      map.constructForeCell(xG, yG, 'bomb');
+      this._bombs.push(new Bomb(xG, yG, this._size, this._power, (new Date()).getTime()) );
+
     }
   }
 
@@ -30,20 +49,16 @@ class Player{
 
   }
 
-  wantToMove(){
-      let nextPos = this.posAfterDir(this.directions);
-      console.log("NEXT POS");
-      let obstacles = this.obstaclesOn(...nextPos);
-      let offsetToLine = Map.offsetToBeOnALine(this._cell.center.y);
-      let offsetToCol = Map.offsetToBeOnACol(this._cell.center.x);
+  wantToMove(obstacles){
+      // console.log("NEXT POS");
+      // let offsetToLine = Map.offsetToBeOnALine(this._cell.center.y);
+      // let offsetToCol = Map.offsetToBeOnACol(this._cell.center.x);
       // console.log("nextPos", nextPos);
       // if(this.canTheyMove(...nextPos)){//METTRE TOUT LE TABLEAU
 
-      if(obstacles==0){//METTRE TOUT LE TABLEAU //Obligé ==0 pour []==0
-        this.move(...nextPos);
-        console.log("moved");
-      }else{
-        console.log("thereisobstacle", obstacles);
+      // if(obstacles==0){//METTRE TOUT LE TABLEAU //Obligé ==0 pour []==0
+      //   console.log("moved");
+      // }else{
         let objA = {posCtr:0, width:this._cell.size}, objB = {posCtr:0, width:map.cellSize};
         //C'est ici que posCtr s'écrase même s'il y a une diagonale
         if(this.directions.x!=0) {
@@ -83,7 +98,7 @@ class Player{
           console.log("allooooo je suis québlo");
           // this.redirectMove(this.directions);
         }
-      }
+      // }
   }
 
   isTouchingObstacles(obstacles){

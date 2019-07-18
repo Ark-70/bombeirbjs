@@ -32,6 +32,7 @@ function gameUpdate(){
   // for (bomb of bombs){
   //   bomb.update();
   // }
+
   gameDraw();
 }
 
