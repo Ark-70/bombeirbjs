@@ -19,7 +19,6 @@ class Player{
   }
 
   update(){
-
     if (this.wantingToMove()){
       let nextPos = this.posAfterDir(this.directions);
       let obstacles = this.obstaclesOn(...nextPos);
@@ -30,12 +29,16 @@ class Player{
         this.wantToMove(obstacles);
       }
     }
-
-    for (let bomb of this._bombs) {
-      bomb.update();
-    }
   }
 
+  updateTheirBombs(){
+    for (let i = this._bombs.length-1; i>=0 ; i--) {
+      this._bombs[i].animate();
+      if(this._bombs[i].isExploded()){
+        this._bombs.splice(i, 1);
+      }
+    }
+  }
 
   plantBomb(){
     let xG = this._cell.grid.x, yG = this._cell.grid.y;

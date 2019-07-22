@@ -28,6 +28,7 @@ players.push(new Player(5, 10, tileSize));
 function gameUpdate(){
   for (player of players) {
     player.update();
+    player.updateTheirBombs();
   }
   // for (bomb of bombs){
   //   bomb.update();

@@ -16,7 +16,7 @@ class Cell {
     this._type = type;
     this._centerOffset = cellSize/2;
     if(isForeground){
-      if (this._type=='bomb') console.log(this);
+      console.assert(type=='bomb'||type=='flame', this);
       this._$elmt = Dom.domCreateForeCell(xG, yG, type, cellSize);
     }
     console.log(this);
