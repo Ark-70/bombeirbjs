@@ -19,7 +19,6 @@ class Cell {
       if (this._type=='bomb') console.log(this);
       this._$elmt = Dom.domCreateForeCell(xG, yG, type, cellSize);
     }
-    console.log(this);
   }
 
   changeType(type){

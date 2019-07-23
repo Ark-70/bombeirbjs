@@ -8,7 +8,7 @@ class Player{
 
   constructor(xG, yG, size, speed=3, power=1) {
     this._cell = new Cell(xG, yG, size, 'player', true);
-    this._animation = new Animation()
+    this._animation = new MyAnimation(this.cell.$elmt.find('.sprite'), 'bomberman.png', 500, [[0, 0], [5, 0], [10, 0], [15, 0]]);
     this.maxSpeed = speed;
     this.keyDown = {'x':{'LEFT':0, 'RIGHT':0}, 'y':{'UP':0, 'DOWN':0}};
     this.directions = {'x':0, 'y':0};
@@ -21,6 +21,8 @@ class Player{
   update(){
 
     if (this.wantingToMove()){
+
+      if(this._animation.interval==null) this._animation.startAnimation();
       let nextPos = this.posAfterDir(this.directions);
       let obstacles = this.obstaclesOn(...nextPos);
 
@@ -29,11 +31,26 @@ class Player{
       }else{ //obstacles nearby
         this.wantToMove(obstacles);
       }
+
+    }else{
+      if(this._animation.interval!=null) this._animation.stopAnimation();
     }
 
-    for (let bomb of this._bombs) {
-      bomb.update();
+    if(this._bombs.length){
+      for (let i = this._bombs.length-1; i >= 0; i--) {
+        this._bombs[i].update();
+        if(this._bombs[i].shouldExplode()){
+          this._bombs[i].explode();
+          this._bombs.splice(i, 1);
+        }
+      }
     }
+
+    // for (let bomb of this._bombs) {
+    //   if(bomb.should)
+    //   bomb.update();
+    // }
+
   }
 
 
@@ -200,10 +217,8 @@ class Player{
   // }
 
   move(x, y){
-    console.log(x, y);
     this._cell.center = {'x':x, 'y':y};
     this._cell.updateAllPosFrom('center');
-    console.log(x, y);
     // this._cell.grid = Map.posToGridPos(x, y);
   }
 
@@ -321,4 +336,7 @@ class Player{
   getGridX(){ return this._cell.grid.x; }
   getGridY(){ return this._cell.grid.y; }
   getKeyDown(){ return this.keyDown; }
+
+  get cell(){ return this._cell };
+
 }

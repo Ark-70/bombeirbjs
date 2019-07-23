@@ -13,11 +13,12 @@ class Bomb{
   }
 
   update(){
-    let now = new Date().getTime();
-    if(now >= this.date+this.cooldown){
-      this.explode();
-    }
     this.animate();
+  }
+
+  shouldExplode(){
+    let now = new Date().getTime();
+    return (now >= this.date+this.cooldown);
   }
 
   explode(){
