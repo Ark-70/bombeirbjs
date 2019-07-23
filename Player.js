@@ -19,7 +19,6 @@ class Player{
   }
 
   update(){
-
     if (this.wantingToMove()){
 
       if(this._animation.interval==null) this._animation.startAnimation();
@@ -52,7 +51,6 @@ class Player{
     // }
 
   }
-
 
   plantBomb(){
     let xG = this._cell.grid.x, yG = this._cell.grid.y;

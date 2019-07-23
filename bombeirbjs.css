@@ -60,13 +60,13 @@ body{
   background-size: 7000%;
 }
 .cell--block{
-  background: orange;
+  background: fireBrick;
   background: url('assets/img/terrain.png') 4.6% 0.1%;
   background-size: 7000%;
 
 }
 .cell--wall{
-  background: FireBrick;
+  background: grey;
   /* background: url('assets/img/terrain.png') -2.5px -2.5px; */
   background: url('assets/img/terrain.png') 0.1% 0.1%;
   background-size: 7000%;
@@ -74,6 +74,11 @@ body{
 .cell--bomb{
   background: grey;
   background: url('assets/img/terrain.png') 19.6% 7.3%;
+  background-size: 7000%;
+}
+.cell--flame{
+  background: orange;
+  background: url('assets/img/terrain.png') 30.1% 19%;
   background-size: 7000%;
 }
 
