@@ -11,6 +11,7 @@ class Map {
 
   constructor($map, gridWidth, gridHeight) {
     console.log($map);
+    this.items = [];
     this._$elmt = $map;
     this._gridWidth = gridWidth;
     this._gridHeight = gridHeight;

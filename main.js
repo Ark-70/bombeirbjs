@@ -29,6 +29,7 @@ function gameUpdate(){
   for (player of players) {
     player.update();
     player.updateTheirBombs();
+    player.updateTheirFlames();
   }
   // for (bomb of bombs){
   //   bomb.update();

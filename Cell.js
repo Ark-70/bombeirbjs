@@ -8,15 +8,17 @@ class Cell {
   _$elmt;
 
 
-  constructor(xG, yG, cellSize, type='empty', isForeground=false) {
+  constructor(xG, yG, cellSize, type='empty', isForeground=false, drop=null) {
     this._size = cellSize;
     this._grid =      {x:xG, y:yG};
     this._upperLeft = {x:this._grid.x*cellSize, y:this._grid.y*cellSize};
     this._center =    {x:this._upperLeft.x+this._size/2, y:this._upperLeft.y+this._size/2};
     this._type = type;
+    if(this._type=='block'){
+      this.drop = 'bombUp';
+    } 
     this._centerOffset = cellSize/2;
     if(isForeground){
-      console.assert(type=='bomb'||type=='flame', this);
       this._$elmt = Dom.domCreateForeCell(xG, yG, type, cellSize);
     }
   }

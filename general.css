@@ -1,0 +1,106 @@
+html{
+  position:relative;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+body{
+  margin:5px;
+}
+
+.display{
+  position:relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.map {
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  /* width:458px; */
+  /* height:50%; */
+  /* grid-template-columns: repeat(3, 1fr); */
+  /* grid-template-rows: repeat(3, 1fr); */
+  /* grid-gap: 1px; */
+  /* grid-auto-rows: minmax(100px, auto); */
+}
+
+.map {
+  position:relative;
+  display: grid;
+  /* grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr)); */
+  grid-auto-rows: 1fr;
+}
+
+/*MAKE IT FORCED SQUARE SHAPE (BUT IT ADDS ONE INVINSIBLE SQUARE)*/
+.map::before {
+  content: '';
+  width: 0;
+  padding-bottom: 100%;
+  grid-row: 1 / 1;
+  grid-column: 1 / 1;
+}
+/* TOUT REDECALER */
+.cell:first-child {
+  grid-row: 1 / 1;
+  grid-column: 1 / 1;
+}
+
+/* Just to make the grid visible */
+.cell, .forecell {
+  image-rendering: pixelated;
+  /* border-radius: 25%; */
+}
+.cell--empty{
+  background: rgba(0,0,0,0.2);
+  background: url('assets/img/terrain.png') 1.6% 0.1%;
+  background-size: 7000%;
+}
+.cell--block{
+  background: fireBrick;
+  background: url('assets/img/terrain.png') 4.6% 0.1%;
+  background-size: 7000%;
+
+}
+.cell--wall{
+  background: grey;
+  /* background: url('assets/img/terrain.png') -2.5px -2.5px; */
+  background: url('assets/img/terrain.png') 0.1% 0.1%;
+  background-size: 7000%;
+}
+
+
+
+
+
+
+
+.forecell{
+  /* border: 1px white solid; */
+  /* border-radius: 25%; */
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+
+
+/* DEBUGSECTION */
+.debug{
+  position:absolute;
+  top:10px;
+  left:10px;
+
+}
+
+.debug__direction{
+  box-sizing: border-box;
+  width:3.5em;
+  height:3.5em;
+  background-color: lightgrey;
+  border-radius: 25%;
+  border:10px solid skyBlue;
+}

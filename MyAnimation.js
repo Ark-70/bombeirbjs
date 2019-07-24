@@ -22,7 +22,7 @@ class MyAnimation {
 
   startAnimation(){
     this.goNextSprite();
-    this.interval = setInterval(()=>this.goNextSprite(), 500); //sort du scope de this de classe
+    this.interval = setInterval(()=>this.goNextSprite(), this.delay); //sort du scope de this de classe
   }
 
   stopAnimation(){

@@ -1,0 +1,36 @@
+.cell--player{
+  z-index:1;
+  /* background: black; */
+  }.cell--player .sprite{
+    padding:0;margin:0;width:100%;height:200%;
+    position:absolute;
+    right:0;
+    bottom:0;
+    background: url('assets/img/bomberman.png') 0% 0%;
+    background-size: 1000%;
+
+    }.cell--player .sprite.UP{
+      background-position: 0% 0%;
+    }.cell--player .sprite.RIGHT{
+      background-position: 0% 3.575%;
+    }.cell--player .sprite.DOWN{
+      background-position: 0% 7.15%;
+    }.cell--player .sprite.LEFT{
+      background-position: 0% 10.725%;
+
+
+    }.cell--player .sprite.frame0{
+      background-position-x: 0%;
+    }.cell--player .sprite.frame1{
+      background-position-x: 11%;
+    }.cell--player .sprite.frame2{
+      background-position-x: 0%;
+    }.cell--player .sprite.frame3{
+      background-position-x: 22%;
+}
+
+/* .player{
+  background-color: black;
+  top:0;
+  left:0;
+} */

@@ -5,10 +5,11 @@ class Player{
   goingDir;// movement;
   _power;
   _bombs;
+  _flames;
 
-  constructor(xG, yG, size, speed=3, power=1) {
+  constructor(xG, yG, size, speed=3, power=2) {
     this._cell = new Cell(xG, yG, size, 'player', true);
-    this._animation = new MyAnimation(this.cell.$elmt.find('.sprite'), 'bomberman.png', 500, [[0, 0], [5, 0], [10, 0], [15, 0]]);
+    this._animation = new MyAnimation(this.cell.$elmt.find('.sprite'), 'bomberman.png', 250, [[0, 0], [5, 0], [10, 0], [15, 0]]);
     this.maxSpeed = speed;
     this.keyDown = {'x':{'LEFT':0, 'RIGHT':0}, 'y':{'UP':0, 'DOWN':0}};
     this.directions = {'x':0, 'y':0};
@@ -16,6 +17,7 @@ class Player{
     this._power = power;
     this._bombs = [];
     this._size = size;
+    this._flames = [];
   }
 
   update(){
@@ -34,22 +36,30 @@ class Player{
     }else{
       if(this._animation.interval!=null) this._animation.stopAnimation();
     }
+  }
 
+  updateTheirBombs(){
     if(this._bombs.length){
       for (let i = this._bombs.length-1; i >= 0; i--) {
         this._bombs[i].update();
         if(this._bombs[i].shouldExplode()){
-          this._bombs[i].explode();
+          this._flames.push(...this._bombs[i].explodeAndGetFlames());
           this._bombs.splice(i, 1);
         }
       }
     }
+  }
 
-    // for (let bomb of this._bombs) {
-    //   if(bomb.should)
-    //   bomb.update();
-    // }
-
+  updateTheirFlames(){
+    if(this._flames.length){
+      for (let i = this._flames.length-1; i>=0 ; i--){
+        this._flames[i].update();
+        if(this._flames[i].shouldExpire()){
+          map.items.push(this._flames[i].expire());
+          this._flames.splice(i, 1);
+        }
+      }
+    }
   }
 
   plantBomb(){
