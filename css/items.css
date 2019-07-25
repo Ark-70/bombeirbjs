@@ -1,0 +1,11 @@
+.cell--item{
+  background: lightBlue;
+  background: url('../img/items.png') 0% 0%;
+  background-size: 800%;
+}
+  .cell--item.frame0{
+    background-position-y: 0%;
+  }
+  .cell--item.frame1{
+    background-position-y: 60%;
+  }

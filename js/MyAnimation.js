@@ -1,5 +1,5 @@
 class MyAnimation {
-  _imgDir = 'assets/img/';
+  _imgDir = '../img/';
   _spritePage;
   _delay;
   _index;
@@ -7,43 +7,52 @@ class MyAnimation {
   _spritesOffsets;
   _$sprite;
 
-  constructor($sprite, spritePage, delay, spritesOffsets) {
+  constructor($sprite, spritePage, delay, frameNumbers, looping=true) {//fullDelay used if not loop animation
     this.$sprite = $sprite;
     this.spritePage = spritePage;
-    this.spritesOffsets = spritesOffsets;//[[0,0], [0,33]]
+    // this.spritesOffsets = spritesOffsets;//[[0,0], [0,33]]
+    this.frameNumbers = frameNumbers;
     this.delay = delay;
-    this.index = 0;
+    this.indexFrame = 0;
     this.interval = null;
+    this.looping = looping;
+    this.frameToUse;
   }
 
   initIdle(){
+    this.$sprite.removeClass('frame1');
+    this.$sprite.removeClass('frame2');
+    this.$sprite.removeClass('frame3');
+    this.$sprite.removeClass('frame4');
     this.$sprite.addClass('frame0');
   }
 
   startAnimation(){
-    this.goNextSprite();
+    // this.goNextSprite();
+    this.applySprite();
     this.interval = setInterval(()=>this.goNextSprite(), this.delay); //sort du scope de this de classe
   }
 
   stopAnimation(){
     clearInterval(this.interval);
-    this.index = 0;
-    this.applySprite();
+    this.indexFrame = 0;
+    this.initIdle();
     this.interval = null;
   }
 
   goNextSprite(){
-    this.index = (this.index+1)%(this.spritesOffsets.length);
+    this.indexFrame = (this.indexFrame+1)%(this.frameNumbers.length);
     this.applySprite();
   }
 
   applySprite(){
+    this.frameToUse = this.frameNumbers[this.indexFrame];
     this.$sprite.removeClass('frame0');
     this.$sprite.removeClass('frame1');
     this.$sprite.removeClass('frame2');
     this.$sprite.removeClass('frame3');
-    this.$sprite.addClass('frame'+this.index);
-    // this.$sprite.css('background-position', this.spritesOffsets[this.index]);
+    this.$sprite.removeClass('frame4');
+    this.$sprite.addClass('frame'+this.frameToUse);
   }
 
   set spritesOffsets(val){ this._spritesOffsets = val; }

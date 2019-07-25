@@ -56,19 +56,19 @@ body{
 }
 .cell--empty{
   background: rgba(0,0,0,0.2);
-  background: url('assets/img/terrain.png') 1.6% 0.1%;
+  background: url('../img/terrain.png') 1.6% 0.1%;
   background-size: 7000%;
 }
 .cell--block{
   background: fireBrick;
-  background: url('assets/img/terrain.png') 4.6% 0.1%;
+  background: url('../img/terrain.png') 4.6% 0.1%;
   background-size: 7000%;
 
 }
 .cell--wall{
   background: grey;
-  /* background: url('assets/img/terrain.png') -2.5px -2.5px; */
-  background: url('assets/img/terrain.png') 0.1% 0.1%;
+  /* background: url('../img/terrain.png') -2.5px -2.5px; */
+  background: url('../img/terrain.png') 0.1% 0.1%;
   background-size: 7000%;
 }
 

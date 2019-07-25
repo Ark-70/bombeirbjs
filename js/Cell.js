@@ -16,7 +16,7 @@ class Cell {
     this._type = type;
     if(this._type=='block'){
       this.drop = 'bombUp';
-    } 
+    }
     this._centerOffset = cellSize/2;
     if(isForeground){
       this._$elmt = Dom.domCreateForeCell(xG, yG, type, cellSize);
@@ -68,5 +68,5 @@ class Cell {
   set center(center)            { this._center = center; }
   set $elmt($elmt)              { this._$elmt = $elmt; }
   set centerOffset(centerOffset){ ;this._centerOffset = centerOffset; }
-
+  set size(val)                 { this._size = val; }
 }
