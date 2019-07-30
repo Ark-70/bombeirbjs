@@ -1,20 +1,18 @@
 class Mob {
-  _cell;
-  _type;
-  _extraLives;
-  _speed;
-  _type;
-  _inMovement;
-  _iddleTime;
 
   constructor(xG, yG, type) {
     this.cell = new Cell(xG, yG, size, 'mob', true);
     this.type = type;
+    this.extraLives;
+    this.speed;
+    this.inMovement;
+    this.iddleTime;
 
     switch (this.type) {
       case 'glouton':
 
         break;
+      case 'mickey':
       default:
 
     }

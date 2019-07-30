@@ -1,4 +1,4 @@
-const DB_MAP = 1;
+const DB_MAP = 0;
 
 class Map {
   _$elmt;
@@ -78,28 +78,26 @@ class Map {
     return grid;
   }
 
-  static closestCol(x){
-    let sizeCell = Math.round($($('.cell')[0]).css('height').replace('px',''));
-    if(x%sizeCell<sizeCell/2){
-      return 'LEFT';
+  static closestCols(xUpperLeft){
+    if(xUpperLeft%tileSize<tileSize/2){
+      return ['LEFT', 'RIGHT'];
     }else{
-      return 'RIGHT';
+      return ['RIGHT', 'LEFT'];
     }
   }
 
-  static closestLine(y){
-    let sizeCell = Math.round($($('.cell')[0]).css('height').replace('px',''));
-    if(y%sizeCell<sizeCell/2){
-      return 'UP';
+  static closestLines(yUpperLeft){
+    let distBweenCoorAndUpCol = yUpperLeft%tileSize;
+    if(distBweenCoorAndUpCol<tileSize/2){
+      return ['UP', 'DOWN'];
     }else{
-      return 'DOWN';
+      return ['DOWN', 'UP'];
     }
   }
 
-  static offsetToBeOnALine(y){
-    let sizeCell = Math.round($($('.cell')[0]).css('height').replace('px',''));
-    let offset = y%sizeCell;
-    if(this.closestLine(y)==UP){
+  static offsetToBeOnALine(yUpperLeft){
+    let offset = yUpperLeft%tileSize;
+    if(this.closestLines(yUpperLeft)[0]=='UP'){
       offset *=(-1);
     }
     return offset;
@@ -107,10 +105,9 @@ class Map {
     // console.log("next is in testing on line !");
     // return this.offsetToBeOnACol(y);//puisque sizeCellHeight==sizeCell==sizeCellWidth
   }
-  static offsetToBeOnACol(x){
-    let sizeCell = Math.round($($('.cell')[0]).css('height').replace('px',''));
-    let offset = x%sizeCell;
-    if(this.closestCol(x)==LEFT){
+  static offsetToBeOnACol(xUpperLeft){
+    let offset = xUpperLeft%tileSize;
+    if(this.closestCols(xUpperLeft)[0]=='LEFT'){
       offset *=(-1);
     }
     return offset;
@@ -125,8 +122,6 @@ class Map {
   static innerDistanceBweenCells(cell1, cell2){
     // cell.pos, .width
     // TODO elle pue de ouf cell1 est prise depuis son centre mais pas cell2
-    console.log(cell1, cell2);
-    console.log("=> distance =", (Math.abs(cell1.pos-cell2.pos)-cell1.width/2-cell2.width/2));
     return ( Math.abs(cell1.pos-cell2.pos)-cell1.width/2-cell2.width/2 );
   }
 }

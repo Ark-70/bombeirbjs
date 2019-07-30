@@ -1,3 +1,5 @@
+const DB_PLAYER_MOVE = 0;
+
 class Player{
   _cell;
   maxSpeed;
@@ -21,6 +23,9 @@ class Player{
   }
 
   update(){
+    if(this.walkingOnItem()){
+      this.collectItem();
+    }
     if (this.wantingToMove()){
 
       if(this._animation.interval==null) this._animation.startAnimation();
@@ -63,10 +68,10 @@ class Player{
   }
 
   plantBomb(){
-    let xG = this._cell.grid.x, yG = this._cell.grid.y;
+    let xG = this._cell.grid.x
+    let yG = this._cell.grid.y;
     if(map.getCellTypeAt(xG, yG)=='empty'){
       this._bombs.push(new Bomb(xG, yG, this._size, this._power, (new Date()).getTime()) );
-
     }
   }
 
@@ -95,14 +100,14 @@ class Player{
             objB.posCtr = obstacles[0][1]*map.cellSize+map.cellSize/2; //droite de l'objet B
         }
         // let objs = this.getPosOfObjs()
-        console.log("objA width",objA.width);
+        if(DB_PLAYER_MOVE) console.log("objA width",objA.width);
         let distance = Map.innerDistanceBweenCells({pos:objA.posCtr, width:objA.width},{pos:objB.posCtr, width:objB.width});
 
 
         // let distance = Map.innerDistanceBweenCells({pos:this._cell.center.y, width:this.height},{pos:obstacles[0][1]*map.cellSize, width:map.cellSize});
-        console.log("distance et maxspeed",distance, this.maxSpeed);
+        if(DB_PLAYER_MOVE) console.log("distance et maxspeed",distance, this.maxSpeed);
         if(Math.abs(distance)<this.maxSpeed && distance!=0){
-          console.log("Need to snap on obstacle");
+          if(DB_PLAYER_MOVE) console.log("Need to snap on obstacle");
         // TODO c'est chelou qu'un jour j'ai une distance = -1 mais bon ballec maintenant j'ai bodge pour que ça marche alors ça va pas me faire chier longtemps
           let addPos = {x:0,y:0};
           switch (this.directions.x) {
@@ -115,13 +120,13 @@ class Player{
             case 'UP':
             case 'DOWN':
               addPos.y = Math.abs(distance);
-              // console.log("On a distance = "+distance+" et on move ("+this._cell.center.x+", "+this._cell.center.y+distance+")");
+              // if(DB_PLAYER_MOVE) console.log("On a distance = "+distance+" et on move ("+this._cell.center.x+", "+this._cell.center.y+distance+")");
               break;
           }
           this.move(this._cell.center.x+addPos.x, this._cell.center.y+addPos.y);
         }else if(distance == 0){
           console.log("allooooo je suis québlo");
-          // this.redirectMove(this.directions);
+          this.redirectMove(this.directions);
         }
       // }
   }
@@ -145,7 +150,7 @@ class Player{
     // optimisable : que les 8 cells autour sinon osef
     let cornersOfPlayer = this.getCornersOfPos(x, y);
     let casesMarchéesDessus = [];
-    console.log("corners", cornersOfPlayer.toString());
+    if(DB_PLAYER_MOVE) console.log("corners", cornersOfPlayer.toString());
     for (let corner of cornersOfPlayer) {
       // console.log("corner :", ...corner);
       let tmpGrid = Map.posToGridPos(...corner);
@@ -158,15 +163,13 @@ class Player{
       }
       if(!alreadyInTab) casesMarchéesDessus.push(tmpTile);
     }
-    console.log("cases marchees dessus", casesMarchéesDessus);
+    if(DB_PLAYER_MOVE) console.log("cases marchees dessus", casesMarchéesDessus);
 
-    // let collision=0;
     let obstacles = [];
-
     // console.log("On veut voir les types de : ", ...casesMarchéesDessus[0],"-", ...casesMarchéesDessus[1],"-", ...casesMarchéesDessus[2],"-", ...casesMarchéesDessus[3]);
     for (let cellPos of casesMarchéesDessus) {
-      console.log('checking cellPos', ...cellPos, map.getCellTypeAt(...cellPos));
-      if(map.getCellTypeAt(...cellPos)!='empty'){
+      if(DB_PLAYER_MOVE) console.log('checking cellPos', ...cellPos, map.getCellTypeAt(...cellPos));
+      if(map.getCellTypeAt(...cellPos)!='empty' && map.getCellTypeAt(...cellPos)!='item'){
         // collision=1;
         obstacles.push([...cellPos]);
       }
@@ -196,33 +199,6 @@ class Player{
     }
     return [newX, newY];
   }
-  // moveInGoingDir(ajustedSpeed=undefined){
-  //   let speedToUse;
-  //   if(ajustedSpeed!=undefined){
-  //     speedToUse = ajustedSpeed;
-  //   }else{
-  //     speedToUse = this.maxSpeed;
-  //   }
-  //
-  //   let newX = this._cell.center.x, newY = this._cell.center.y;
-  //   switch (this.goingDir.x) {
-  //     case 'LEFT':
-  //       newX = this._cell.center.x - speedToUse;
-  //     break;
-  //     case 'RIGHT':
-  //       newX = this._cell.center.x + speedToUse;
-  //     break;
-  //   }
-  //   switch(this.goingDir.y){
-  //     case 'UP':
-  //       newY = this._cell.center.y - speedToUse;
-  //     break;
-  //     case 'DOWN':
-  //       newY = this._cell.center.y + speedToUse;
-  //     break;
-  //   }
-  //   this.move(newX, newY);
-  // }
 
   move(x, y){
     this._cell.center = {'x':x, 'y':y};
@@ -256,66 +232,48 @@ class Player{
 
 /* WITH OBSTACLES */
   redirectMove(dir){
-    let offsetToLine = Map.offsetToBeOnALine(this._cell.center.y);
-    let offsetToCol = Map.offsetToBeOnACol(this._cell.center.x);
-
-    let nextPos = this.posAfterDir(this.directions);
-
     if(dir.x=='LEFT' || dir.x=='RIGHT'){
-      if(!offsetToLine){
-        this.goingDir = dir;
-        this.moveInGoingDir();
-      }else if(offsetToLine<this.maxSpeed){
-        this.move(this._cell.center.x, this._cell.center.y+offsetToLine);
+      let primaryDir = (dir.x=='RIGHT') ? 1 : -1;
+      let cellFirstChoice = map.getCellTypeAt(this._cell.grid.x+primaryDir, this._cell.grid.y);
+      if(cellFirstChoice!='wall' && cellFirstChoice!='block'){
+        this.move(...this.posAfterDir({'x':null, 'y':Map.closestLines(this._cell.upperLeft.y)[0]}));
       }else{
-        this.goingDir = Map.closestLine(this._cell.center.y);
-        this.move(...nextPos);
+        let secondaryDir = (Map.closestLines(this._cell.upperLeft.y)[1]=='DOWN') ? 1 : -1;
+        let cellSecondChoice = map.getCellTypeAt(this._cell.grid.x+primaryDir, this._cell.grid.y+secondaryDir);
+        if(cellSecondChoice!='wall' && cellSecondChoice!='block'){
+          this.move(...this.posAfterDir({'x':null, 'y':Map.closestLines(this._cell.upperLeft.y)[1]}));
+        }
       }
     }
     if(dir.y=='UP' || dir.y=='DOWN'){
-      if(!offsetToCol){
-        this.goingDir = dir;
-        this.moveInGoingDir();
-      }else if(offsetToCol<this.maxSpeed){
-        this.move(this._cell.center.x+offsetToCol, this._cell.center.y);
+      let primaryDir = (dir.x=='RIGHT') ? 1 : -1;
+      let cellFirstChoice = map.getCellTypeAt(this._cell.grid.x+primaryDir, this._cell.grid.y);
+      if(cellFirstChoice!='wall' && cellFirstChoice!='block'){
+        this.move(...this.posAfterDir({'x':null, 'y':Map.closestLines(this._cell.upperLeft.y)[0]}));
       }else{
-        this.goingDir = Map.closestCol(this._cell.center.x);
-        this.move(...nextPos);
+        let secondaryDir = (Map.closestLines(this._cell.upperLeft.y)[1]=='DOWN') ? 1 : -1;
+        let cellSecondChoice = map.getCellTypeAt(this._cell.grid.x+primaryDir, this._cell.grid.y+secondaryDir);
+        if(cellSecondChoice!='wall' && cellSecondChoice!='block'){
+          this.move(...this.posAfterDir({'x':null, 'y':Map.closestLines(this._cell.upperLeft.y)[1]}));
+        }
       }
     }
   }
 
-// /* WITH OBSTACLES */
-//   // wantToMove(dir){
-//   //   let offsetToLine = Map.offsetToBeOnALine(this._cell.center.y);
-//   //   let offsetToCol = Map.offsetToBeOnACol(this._cell.center.x);
-//   //
-//   //   if(dir=='LEFT' || dir=='RIGHT'){
-//   //     if(!offsetToLine){
-//   //       this.goingDir = dir;
-//   //       this.moveInGoingDir();
-//   //     }else if(offsetToLine<this.maxSpeed){
-//   //       // console.log("snapping into", offsetToLine);
-//   //       this.move(this._cell.center.x, this._cell.center.y+offsetToLine);
-//   //     }else{
-//   //       this.goingDir = Map.closestLine(this._cell.center.y);
-//   //       this.moveInGoingDir();
-//   //     }
-//   //   }else if(dir=='UP' || dir=='DOWN'){
-//   //     if(!offsetToCol){
-//   //       this.goingDir = dir;
-//   //       this.moveInGoingDir();
-//   //     }else if(offsetToCol<this.maxSpeed){
-//   //       // console.log("trying to snap !","this._cell.center.x",this._cell.center.x, "+ offsetToCol", offsetToCol, " = ", this._cell.center.x+offsetToCol);
-//   //       this.move(this._cell.center.x+offsetToCol, this._cell.center.y);
-//   //     }else{
-//   //       this.goingDir = Map.closestCol(this._cell.center.x);
-//   //       this.moveInGoingDir();
-//   //     }
-//   //   }
-//   // }
+  collectItem(){
+    let cell = map.getCellAt(...Object.values(this._cell.grid));
+    switch (cell.type) {
+      case 'item':
+        cell.type = 'empty';
+        this._power++;
+        break;
+      default:
+
+    }
+  }
 
 
+  walkingOnItem(){ return (map.getCellTypeAt(...Object.values(this._cell.grid))=='item') }
   wantingToMove(){ return (this.directions.x!=0 || this.directions.y!=0) }
 
 

@@ -37,7 +37,6 @@ class Cell {
   updateAllPosFrom(base){
     switch (base) {
       case 'center':
-        console.log(this._center);
         for (const [key, value] of Object.entries(this._center)){
           this._upperLeft[key] = value-this._centerOffset;
         }
