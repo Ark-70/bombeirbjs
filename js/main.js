@@ -7,7 +7,7 @@ const gridWidth = 14;
 const gridHeight = 14;
 
 const gameSize = getUsableHeight(gridHeight);
-const tileSize = gameSize/gridHeight;
+const TILE_SIZE = gameSize/gridHeight;
 
 let map = new Map($('.map'), gridWidth, gridHeight);
 // map.constructCells();
@@ -21,7 +21,7 @@ map.replaceTypeOfCells(map.cellsWall, 'wall');
 map.replaceTypeOfCells(map.cellsBlock, 'block');
 
 let players = [];
-players.push(new Player(5, 10, tileSize));
+players.push(new Player(5, 10, TILE_SIZE));
 
 
 

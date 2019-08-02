@@ -31,34 +31,28 @@ class Map {
     for (let xG=0; xG<gridWidth; xG++) {
       let tmpTabAllY = [];
       for (let yG=0; yG<gridHeight; yG++) {
-        let tmpCell = new Cell(xG, yG, this._cellSize);
+        let tmpCell = new Cell(xG, yG);
         tmpTabAllY.push(tmpCell);
       }
       this._cells.push(tmpTabAllY);
     }
+    // debugger;
   }
-    // let cellsDom = $('.cell').toArray();
-    // // console.log($cellsDom.toArray());
-    // for (let y=0 ; y<gridHeight ; y++) {
-    //   let tmpTabAllY = [];
-    //   for (let x=0; x<gridWidth; x++) {
-    //     let elmt = cellsDom[x*this.gridWidth+y]
-    //     let tmpCell = new Cell($(elmt), this.cellSize);
-    //     tmpTabAllY.push(tmpCell);
-    //     // C'EST QU'UN TABLEAU ET PAS UN TABLEAU DE TABLEAU
-    //     // let tmpCell = new Cell($(elmt), this.cellSize);
-    //   }
-    //   this.cells.push(tmpTabAllY);
-    // }
 
   constructForeCell(xG, yG, type, isForeground=true){
     // let $tmpCell = domAddForeCell(xG, yG, type);
-    let tmpCell = new Cell(xG, yG, this.cellSize, type, isForeground=true);
+    let tmpCell = new Cell(xG, yG, type, isForeground=true);
     this._cells.push(tmpCell);
   }
 
   getCellAt(x, y){
-    return this._cells[x][y];
+      let mabite = this._cells[x][y];
+      let macouille = mabite.type;
+      if(mabite==undefined){
+        debugger;
+        console.error("!");
+      }
+    return mabite;
   }
   getCellTypeAt(x, y){
     let tmpCell = this.getCellAt(x, y);
@@ -72,14 +66,14 @@ class Map {
   }
 
   static posToGridPos(x, y){
-    let gridX = Math.floor( x/tileSize );
-    let gridY = Math.floor( y/tileSize );
+    let gridX = Math.floor( x/TILE_SIZE );
+    let gridY = Math.floor( y/TILE_SIZE );
     let grid = {'x':gridX, 'y':gridY};
     return grid;
   }
 
   static closestCols(xUpperLeft){
-    if(xUpperLeft%tileSize<tileSize/2){
+    if(xUpperLeft%TILE_SIZE<TILE_SIZE/2){
       return ['LEFT', 'RIGHT'];
     }else{
       return ['RIGHT', 'LEFT'];
@@ -87,8 +81,8 @@ class Map {
   }
 
   static closestLines(yUpperLeft){
-    let distBweenCoorAndUpCol = yUpperLeft%tileSize;
-    if(distBweenCoorAndUpCol<tileSize/2){
+    let distBweenCoorAndUpCol = yUpperLeft%TILE_SIZE;
+    if(distBweenCoorAndUpCol<TILE_SIZE/2){
       return ['UP', 'DOWN'];
     }else{
       return ['DOWN', 'UP'];
@@ -96,7 +90,7 @@ class Map {
   }
 
   static offsetToBeOnALine(yUpperLeft){
-    let offset = yUpperLeft%tileSize;
+    let offset = yUpperLeft%TILE_SIZE;
     if(this.closestLines(yUpperLeft)[0]=='UP'){
       offset *=(-1);
     }
@@ -106,7 +100,7 @@ class Map {
     // return this.offsetToBeOnACol(y);//puisque sizeCellHeight==sizeCell==sizeCellWidth
   }
   static offsetToBeOnACol(xUpperLeft){
-    let offset = xUpperLeft%tileSize;
+    let offset = xUpperLeft%TILE_SIZE;
     if(this.closestCols(xUpperLeft)[0]=='LEFT'){
       offset *=(-1);
     }

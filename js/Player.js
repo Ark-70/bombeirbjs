@@ -10,7 +10,7 @@ class Player{
   _flames;
 
   constructor(xG, yG, size, speed=3, power=3) {
-    this._cell = new Cell(xG, yG, size, 'player', true);
+    this._cell = new Forecell(xG, yG, 'player');
     this._animation = new MyAnimation(this.cell.$elmt.find('.sprite'), 'bomberman.png', 250, [1, 0, 2, 0], true);
     this.maxSpeed = speed;
     this.keyDown = {'x':{'LEFT':0, 'RIGHT':0}, 'y':{'UP':0, 'DOWN':0}};
@@ -18,7 +18,7 @@ class Player{
     this.goingDir = this.directions;
     this._power = power;
     this._bombs = [];
-    this._size = size;
+    this._size = TILE_SIZE;
     this._flames = [];
   }
 
@@ -68,10 +68,10 @@ class Player{
   }
 
   plantBomb(){
-    let xG = this._cell.grid.x
+    let xG = this._cell.grid.x;
     let yG = this._cell.grid.y;
     if(map.getCellTypeAt(xG, yG)=='empty'){
-      this._bombs.push(new Bomb(xG, yG, this._size, this._power, (new Date()).getTime()) );
+      this._bombs.push(new Bomb(xG, yG, this._power));
     }
   }
 
@@ -125,7 +125,6 @@ class Player{
           }
           this.move(this._cell.center.x+addPos.x, this._cell.center.y+addPos.y);
         }else if(distance == 0){
-          console.log("allooooo je suis québlo");
           this.redirectMove(this.directions);
         }
       // }
@@ -202,11 +201,14 @@ class Player{
 
   move(x, y){
     this._cell.center = {'x':x, 'y':y};
+    console.log("EUH ALLO");
+    debugger;
     this._cell.updateAllPosFrom('center');
     // this._cell.grid = Map.posToGridPos(x, y);
   }
 
   display(){
+    console.log("c'est la ?");
     this._cell.$elmt.css('left',this._cell.upperLeft.x);
     this._cell.$elmt.css('top',this._cell.upperLeft.y);
 
@@ -246,15 +248,15 @@ class Player{
       }
     }
     if(dir.y=='UP' || dir.y=='DOWN'){
-      let primaryDir = (dir.x=='RIGHT') ? 1 : -1;
-      let cellFirstChoice = map.getCellTypeAt(this._cell.grid.x+primaryDir, this._cell.grid.y);
+      let primaryDir = (dir.y=='DOWN') ? 1 : -1;
+      let cellFirstChoice = map.getCellTypeAt(this._cell.grid.x, this._cell.grid.y+primaryDir);
       if(cellFirstChoice!='wall' && cellFirstChoice!='block'){
-        this.move(...this.posAfterDir({'x':null, 'y':Map.closestLines(this._cell.upperLeft.y)[0]}));
+        this.move(...this.posAfterDir({'x':Map.closestCols(this._cell.upperLeft.x)[0], 'y':null}));
       }else{
-        let secondaryDir = (Map.closestLines(this._cell.upperLeft.y)[1]=='DOWN') ? 1 : -1;
-        let cellSecondChoice = map.getCellTypeAt(this._cell.grid.x+primaryDir, this._cell.grid.y+secondaryDir);
+        let secondaryDir = (Map.closestCols(this._cell.upperLeft.y)[1]=='RIGHT') ? 1 : -1;
+        let cellSecondChoice = map.getCellTypeAt(this._cell.grid.x+secondaryDir, this._cell.grid.y+primaryDir);
         if(cellSecondChoice!='wall' && cellSecondChoice!='block'){
-          this.move(...this.posAfterDir({'x':null, 'y':Map.closestLines(this._cell.upperLeft.y)[1]}));
+          this.move(...this.posAfterDir({'x':Map.closestCols(this._cell.upperLeft.y)[1], 'y':null}));
         }
       }
     }

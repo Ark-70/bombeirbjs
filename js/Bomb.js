@@ -6,10 +6,10 @@ class Bomb {
   _flames;
   _exploded;
 
-  constructor(xG, yG, size, power, date, color = 'neutral') {
-    this.cell = new Cell(xG, yG, size, 'bomb', true);
+  constructor(xG, yG, power, color = 'neutral') {
+    this.cell = new Forecell(xG, yG, 'bomb');
+    this.date = (new Date()).getTime();
     this.cooldown = 2500;
-    this.date = date;
     this.explosionDate = this.date + this.cooldown;
     this.flames = [];
     this.power = power;

@@ -3,23 +3,23 @@ class Cell {
   _upperLeft  = {x:null, y:null};
   _center     = {x:null, y:null};
   _size;
-  _centerOffset;
   _type;
   _$elmt;
+  centerOffset;
 
 
-  constructor(xG, yG, cellSize, type='empty', isForeground=false, drop=null) {
-    this._size = cellSize;
+  constructor(xG, yG, type='empty', isForeground=false, drop=null) {
+    this._size = TILE_SIZE;
     this._grid =      {x:xG, y:yG};
-    this._upperLeft = {x:this._grid.x*cellSize, y:this._grid.y*cellSize};
+    this._upperLeft = {x:this._grid.x*TILE_SIZE, y:this._grid.y*TILE_SIZE};
     this._center =    {x:this._upperLeft.x+this._size/2, y:this._upperLeft.y+this._size/2};
     this._type = type;
+    this.centerOffset = this._size/2;
     if(this._type=='block'){
       this.drop = 'bombUp';
     }
-    this._centerOffset = cellSize/2;
     if(isForeground){
-      this._$elmt = Dom.domCreateForeCell(xG, yG, type, cellSize);
+      this._$elmt = Dom.domCreateForeCell(xG, yG, type, TILE_SIZE);
     }
   }
 
@@ -38,7 +38,7 @@ class Cell {
     switch (base) {
       case 'center':
         for (const [key, value] of Object.entries(this._center)){
-          this._upperLeft[key] = value-this._centerOffset;
+          this._upperLeft[key] = value-this.centerOffset;
         }
         this._grid = Map.posToGridPos(...Object.values(this._center));
         break;
@@ -58,7 +58,6 @@ class Cell {
   get grid()      { return this._grid; }
   get center()    { return this._center; }
   get $elmt()     { return this._$elmt; }
-  get centerOffset()     { return this._centerOffset; }
   get size()     { return this._size; }
 
   set type(type)                { this._type = type; }
@@ -66,6 +65,5 @@ class Cell {
   set grid(grid)                { this._grid = grid; }
   set center(center)            { this._center = center; }
   set $elmt($elmt)              { this._$elmt = $elmt; }
-  set centerOffset(centerOffset){ ;this._centerOffset = centerOffset; }
   set size(val)                 { this._size = val; }
 }

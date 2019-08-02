@@ -1,7 +1,7 @@
 class Flame {
 
   constructor(xG, yG, date, flameType, color) {
-    this.cell = new Cell(xG, yG, tileSize, 'flame', true);
+    this.cell = new Forecell(xG, yG, 'flame');
     this.date = date;
     this.expired = false;
     this.cooldown = 700;//temps d'expiration en ms

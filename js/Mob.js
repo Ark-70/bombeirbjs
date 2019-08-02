@@ -1,7 +1,7 @@
 class Mob {
 
   constructor(xG, yG, type) {
-    this.cell = new Cell(xG, yG, size, 'mob', true);
+    this.cell = new Cell(xG, yG, 'mob', true);
     this.type = type;
     this.extraLives;
     this.speed;
