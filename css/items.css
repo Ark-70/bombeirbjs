@@ -9,3 +9,16 @@
   .cell--item.frame1{
     background-position-y: 60%;
   }
+
+
+.cell--item_bombUp{
+  background: lightBlue;
+  background: url('../img/items.png') 0% 0%;
+  background-size: 800%;
+}
+  .cell--item_bombUp.frame0{
+    background-position-y: 0%;
+  }
+  .cell--item_bombUp.frame1{
+    background-position-y: 60%;
+  }

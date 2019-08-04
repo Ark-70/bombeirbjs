@@ -23,11 +23,14 @@ class Cell {
     }
   }
 
-  changeType(type){
-    let oldType = this._type;
-    this._type = type;
-    this.updateDomType(oldType, type);
+  resetProperties(){
+    
   }
+  // changeType(type){
+  //   let oldType = this._type;
+  //   this._type = type;
+  //   this.updateDomType(oldType, type);
+  // }
 
   updateDomType(oldType, newType){
     this._$elmt.removeClass(`cell--${oldType}`);

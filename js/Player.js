@@ -23,12 +23,14 @@ class Player{
   }
 
   update(){
+    //ITEM
     if(this.walkingOnItem()){
       this.collectItem();
     }
+    //MOVE
     if (this.wantingToMove()){
+      if(this._animation.interval==null) this._animation.startAnimation(); //ANIMATION
 
-      if(this._animation.interval==null) this._animation.startAnimation();
       let nextPos = this.posAfterDir(this.directions);
       let obstacles = this.obstaclesOn(...nextPos);
 
@@ -168,7 +170,7 @@ class Player{
     // console.log("On veut voir les types de : ", ...casesMarchéesDessus[0],"-", ...casesMarchéesDessus[1],"-", ...casesMarchéesDessus[2],"-", ...casesMarchéesDessus[3]);
     for (let cellPos of casesMarchéesDessus) {
       if(DB_PLAYER_MOVE) console.log('checking cellPos', ...cellPos, map.getCellTypeAt(...cellPos));
-      if(map.getCellTypeAt(...cellPos)!='empty' && map.getCellTypeAt(...cellPos)!='item'){
+      if(map.getCellTypeAt(...cellPos)!='empty' && !map.getCellTypeAt(...cellPos).includes('item')){
         // collision=1;
         obstacles.push([...cellPos]);
       }
@@ -201,8 +203,8 @@ class Player{
 
   move(x, y){
     this._cell.center = {'x':x, 'y':y};
-    console.log("EUH ALLO");
-    debugger;
+    // console.log("EUH ALLO");
+    // debugger;
     this._cell.updateAllPosFrom('center');
     // this._cell.grid = Map.posToGridPos(x, y);
   }
@@ -265,8 +267,9 @@ class Player{
   collectItem(){
     let cell = map.getCellAt(...Object.values(this._cell.grid));
     switch (cell.type) {
-      case 'item':
-        cell.type = 'empty';
+      case 'item_bombUp':
+        map.replaceSingleTypeOfCells([cell.grid.x, cell.grid.y], 'empty');
+        cell.animation.stopAnimation();
         this._power++;
         break;
       default:
@@ -275,7 +278,7 @@ class Player{
   }
 
 
-  walkingOnItem(){ return (map.getCellTypeAt(...Object.values(this._cell.grid))=='item') }
+  walkingOnItem(){ return (map.getCellTypeAt(...Object.values(this._cell.grid)).includes('item')) }
   wantingToMove(){ return (this.directions.x!=0 || this.directions.y!=0) }
 
 

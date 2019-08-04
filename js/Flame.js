@@ -10,8 +10,10 @@ class Flame {
       //TODO A déplacer
       flameType = 'block';
       let tmpBlock = map.getCellAt(xG, yG);
-      tmpBlock._type = 'item';
-      tmpBlock.updateDomType('block', 'item');
+      map.replaceSingleTypeOfCells([xG, yG], 'item_bombUp');
+      // tmpBlock._type = 'item';
+      // tmpBlock.updateDomType('block', 'item');$
+      console.log(tmpBlock);
       tmpBlock.animation = new MyAnimation(tmpBlock.$elmt, 'items.png', 100, [0, 1]);
       tmpBlock.animation.startAnimation();
     }else if(map.getCellTypeAt(xG, yG)=='item'){
@@ -19,7 +21,8 @@ class Flame {
       flameType = 'item';
       let tmpBlock = map.getCellAt(xG, yG);
       tmpBlock._type = 'empty';
-      tmpBlock.updateDomType('item', 'empty');
+      // tmpBlock.updateDomType('item', 'empty');
+      map.replaceSingleTypeOfCells([xG, yG], 'empty');
     }
 
     // this.cell.$elmt.addClass('flame--'+color);

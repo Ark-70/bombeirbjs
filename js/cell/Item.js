@@ -1,6 +1,5 @@
-class Item extends Forecell {
+class Item extends Cell {
   constructor(xG, yG, subtype='bombUp') {
-    let type = 'item_'+bombUp;
-    super(xG, yG, type);
+    super(xG, yG, 'item_'+subtype);
   }
 }

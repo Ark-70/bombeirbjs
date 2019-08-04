@@ -59,10 +59,28 @@ class Map {
     return tmpCell.type;
   }
 
-  replaceTypeOfCells(cellsPos, type){
-    for (let pos of cellsPos) {
-      this._cells[pos[0]][pos[1]].changeType(type);
+  replaceTypeOfCells(cellsPosTab, type){
+    for (let cellPos of cellsPosTab) {
+      this.replaceSingleTypeOfCells(cellPos, type);
     }
+  }
+  replaceSingleTypeOfCells(cellPos, type){
+    let old = this._cells[cellPos[0]][cellPos[1]];
+    let newCell;
+    switch (type) {
+      case 'block':
+        newCell = new Block(old.grid.x, old.grid.y, 'bombUp'); break;
+      case 'wall':
+        newCell = new Wall(old.grid.x, old.grid.y); break;
+      case 'item':
+        newCell = new Item(old.grid.x, old.grid.y); break;
+      default:
+        newCell = new Cell(old.grid.x, old.grid.y, type);
+    }
+    this._cells[cellPos[0]][cellPos[1]] = newCell;
+    // old._$elmt.removeClass().addClass('cell');
+    newCell._$elmt = old._$elmt;
+    newCell.updateDomType(old.type, newCell.type);
   }
 
   static posToGridPos(x, y){
