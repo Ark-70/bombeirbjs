@@ -18,13 +18,10 @@ class Cell {
     if(this._type=='block'){
       this.drop = 'bombUp';
     }
-    if(isForeground){
-      this._$elmt = Dom.domCreateForeCell(xG, yG, type, TILE_SIZE);
-    }
   }
 
   resetProperties(){
-    
+
   }
   // changeType(type){
   //   let oldType = this._type;

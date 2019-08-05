@@ -1,0 +1,34 @@
+.cell--mob{
+  z-index:1;
+  /* background: black; */
+  }.cell--mob .sprite{
+    padding:0;margin:0;width:100%;height:200%;
+    position:absolute;
+    right:0;
+    bottom:0;
+    background: url('../img/bomberman.png') 0% 0%;
+    background-size: 1000%;
+
+    }.cell--mob .sprite.UP{
+      background-position: 0% 0%;
+    }.cell--mob .sprite.RIGHT{
+      background-position: 0% 3.575%;
+    }.cell--mob .sprite.DOWN{
+      background-position: 0% 7.15%;
+    }.cell--mob .sprite.LEFT{
+      background-position: 0% 10.725%;
+
+
+    }.cell--mob .sprite.frame0{
+      background-position-x: 0%;
+    }.cell--mob .sprite.frame1{
+      background-position-x: 11%;
+    }.cell--mob .sprite.frame2{
+      background-position-x: 22%;
+}
+
+/* .mob{
+  background-color: black;
+  top:0;
+  left:0;
+} */

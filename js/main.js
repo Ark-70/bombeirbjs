@@ -19,6 +19,7 @@ dom.createMapDom(map.cells, gridWidth, gridHeight, gameSize);
 
 map.replaceTypeOfCells(map.cellsWall, 'wall');
 map.replaceTypeOfCells(map.cellsBlock, 'block');
+let mobs = map.createForecellMobs(map.mobs);
 
 let players = [];
 players.push(new Player(5, 10, TILE_SIZE));
@@ -31,6 +32,9 @@ function gameUpdate(){
     player.update();
     player.updateTheirBombs();
     player.updateTheirFlames();
+  }
+  for (mob of mobs) {
+    mob.update();
   }
   // for (bomb of bombs){
   //   bomb.update();

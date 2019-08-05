@@ -22,6 +22,7 @@ class Map {
     this.constructGridCells(this.cells);
     this._cellsWall = [[8, 12], [2, 5], [10, 4], [12, 6], [6, 6], [7, 1]];
     this._cellsBlock = [[10, 12], [4, 5], [8, 4], [6,9], [10,7], [4,1], [11,1], [2,10]];
+    this.mobs = [[3, 3]];
     // this.replaceTypeOfCells(this.cellsBlock, 'block');
     // this.replaceTypeOfCells(this.cellsWall, 'wall');
   }
@@ -46,20 +47,28 @@ class Map {
   }
 
   getCellAt(x, y){
-      let mabite = this._cells[x][y];
-      let macouille = mabite.type;
-      if(mabite==undefined){
-        debugger;
-        console.error("!");
+      let cell = this._cells[x][y];
+      if(cell==undefined){
+        debugger; console.error("!");
       }
-    return mabite;
+    return cell;
   }
   getCellTypeAt(x, y){
     let tmpCell = this.getCellAt(x, y);
     return tmpCell.type;
   }
 
+  createForecellMobs(posTab){
+    let tmpTab = [];
+    debugger;
+    for (let pos of posTab) {
+      tmpTab.push(new Forecell(pos[0], pos[1], 'mob'));
+    }
+    return tmpTab;
+  }
+
   replaceTypeOfCells(cellsPosTab, type){
+    // let oldCell = xG, yG, type='empty', isForeground=false, drop=null
     for (let cellPos of cellsPosTab) {
       this.replaceSingleTypeOfCells(cellPos, type);
     }
