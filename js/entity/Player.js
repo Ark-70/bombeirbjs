@@ -11,15 +11,15 @@ class Player{
 
   constructor(xG, yG, size, speed=3, power=3) {
     this._cell = new Forecell(xG, yG, 'player');
-    this._animation = new MyAnimation(this.cell.$elmt.find('.sprite'), 'bomberman.png', 250, [1, 0, 2, 0], true);
+    this.animation = new MyAnimation(this.cell.$elmt.find('.sprite'), 'bomberman.png', 250, [1, 0, 2, 0], true);
     this.maxSpeed = speed;
     this.keyDown = {'x':{'LEFT':0, 'RIGHT':0}, 'y':{'UP':0, 'DOWN':0}};
     this.directions = {'x':0, 'y':0};
     this.goingDir = this.directions;
     this._power = power;
     this._bombs = [];
-    this._size = TILE_SIZE;
     this._flames = [];
+    this._size = TILE_SIZE;
   }
 
   update(){
@@ -29,7 +29,8 @@ class Player{
     }
     //MOVE
     if (this.wantingToMove()){
-      if(this._animation.interval==null) this._animation.startAnimation(); //ANIMATION
+      startAnimationIfOff(this);
+       //ANIMATION
 
       let nextPos = this.posAfterDir(this.directions);
       let obstacles = this.obstaclesOn(...nextPos);
@@ -41,7 +42,7 @@ class Player{
       }
 
     }else{
-      if(this._animation.interval!=null) this._animation.stopAnimation();
+      stopAnimationIfOn(this);
     }
   }
 
@@ -203,17 +204,12 @@ class Player{
 
   move(x, y){
     this._cell.center = {'x':x, 'y':y};
-    // console.log("EUH ALLO");
-    // debugger;
     this._cell.updateAllPosFrom('center');
-    // this._cell.grid = Map.posToGridPos(x, y);
   }
 
   display(){
-    console.log("c'est la ?");
     this._cell.$elmt.css('left',this._cell.upperLeft.x);
     this._cell.$elmt.css('top',this._cell.upperLeft.y);
-
   }
 
   // set speed(speed){

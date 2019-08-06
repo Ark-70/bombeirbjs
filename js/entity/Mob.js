@@ -5,18 +5,9 @@ class Mob {
     this.type = type;
     this.extraLives;
     this.speed;
-    this.state;//'moving' 'iddle' 'exploding' 'invulnerable'
+    this.state = 'iddle';//'moving' 'iddle' 'exploding' 'invulnerable'
     this.iddleTime;
     this.nextMove;
-
-    switch (this.type) {
-      case 'glouton':
-
-        break;
-      case 'bigoudi':
-      default:
-    }
-
   }
 
   init(){
@@ -26,12 +17,14 @@ class Mob {
   update(){
     switch (this.state) {
       case 'iddle':
+      stopAnimationIfOn(animatable);
         let possibleMoves = this.whereCanTheyMove();
         let nextMove = this.decideMove(possibleMoves);
         this.startMoving(nextMove);
         this.state = 'moving';
         break;
       case 'moving':
+        startAnimationIfOff(animatable);
         if(!moveHasEnded()){
           if(this.canTheyStillMove()){
             keepMoving(nextMove);
@@ -53,12 +46,13 @@ class Mob {
 
 
   whereCanTheyMove(){
-    let x = this.grid.x;
-    let y = this.grid.y;
+    let x = this.cell.grid.x;
+    let y = this.cell.grid.y;
     let cells = [[x-1, y], [x, y-1], [x+1, y], [x, y+1]];
     for (var i = 0; i < cells.length; i++) {
-      let type = map.getCellTypeAt(cells[i][0], cell[i][1]);
+      let type = map.getCellTypeAt(cells[i][0], cells[i][1]);
       if(Mob.isTypeAnObstacle(type)){ //equivalent this.constructor.isTypeAnObstacle()
+
       }
 
     }
@@ -82,16 +76,22 @@ class Mob {
 
   }
 
+  display(){
+    this._cell.$elmt.css('left',this._cell.upperLeft.x);
+    this._cell.$elmt.css('top',this._cell.upperLeft.y);
+  }
+
+
+  // STATICS
   static isTypeAnObstacle(type){
     switch (type) {
       case 'block':
       case 'wall':
       case 'bomb':
       case 'item':
-      return 1;
-      break;
+        return 1;
       default:
-      return 0;
+        return 0;
     }
   }
 

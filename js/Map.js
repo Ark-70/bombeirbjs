@@ -40,9 +40,9 @@ class Map {
     // debugger;
   }
 
-  constructForeCell(xG, yG, type, isForeground=true){
+  constructForeCell(xG, yG, type){
     // let $tmpCell = domAddForeCell(xG, yG, type);
-    let tmpCell = new Cell(xG, yG, type, isForeground=true);
+    let tmpCell = new Cell(xG, yG, type, true);
     this._cells.push(tmpCell);
   }
 
@@ -60,9 +60,8 @@ class Map {
 
   createForecellMobs(posTab){
     let tmpTab = [];
-    debugger;
     for (let pos of posTab) {
-      tmpTab.push(new Forecell(pos[0], pos[1], 'mob'));
+      tmpTab.push(new Bombermob(pos[0], pos[1]));
     }
     return tmpTab;
   }
