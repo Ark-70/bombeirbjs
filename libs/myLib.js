@@ -21,3 +21,11 @@ function startAnimationIfOff(animatable){
   if(animatable.animation.interval==null)
   animatable.animation.startAnimation();
 }
+
+function gridPosToUpperLeft(x, y=null){
+  //je sais pas si le +1 est nécessaire
+  let xUpperLeft = x*TILE_SIZE+1;
+  if(y==null) return xUpperLeft;
+  yUpperLeft = y*TILE_SIZE+1;
+  return [xUpperLeft, yUpperLeft];
+}

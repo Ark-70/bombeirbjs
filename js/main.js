@@ -35,6 +35,7 @@ function gameUpdate(){
   }
   for (mob of mobs) {
     mob.update();
+    mob.display();
     console.log(mob.cell.grid);
   }
   // for (bomb of bombs){
