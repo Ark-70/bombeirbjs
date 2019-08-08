@@ -62,13 +62,17 @@ class Bombermob extends Mob{
 
   prepareToMove(){
     let possibleMoves = this.whereCanTheyMove();
-    this.nextMove = this.chooseMove(possibleMoves);
-    this.cellDestination = this.nextCellAfterMove(this.nextMove);
+    if(possibleMoves.length>0){
+      this.nextMove = this.chooseMove(possibleMoves);
+      this.cellDestination = this.nextCellAfterMove(this.nextMove);
+    }
   }
 
   canTheyStillMove(){return 1};
 
   chooseMove(possibleMoves){
+    // let index = Math.random()*possiblesMoves.length;
+    // return possibleMoves[index];
     return 'RIGHT';
   }
 

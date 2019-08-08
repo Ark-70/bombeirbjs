@@ -29,6 +29,14 @@ class Cell {
   //   this.updateDomType(oldType, type);
   // }
 
+  updateClassDir(dir){
+    this.$elmt.find('.sprite').removeClass('LEFT');
+    this.$elmt.find('.sprite').removeClass('RIGHT');
+    this.$elmt.find('.sprite').removeClass('UP');
+    this.$elmt.find('.sprite').removeClass('DOWN');
+    this.$elmt.find('.sprite').addClass(dir);
+  }
+
   updateDomType(oldType, newType){
     this._$elmt.removeClass(`cell--${oldType}`);
     this._$elmt.addClass(`cell--${newType}`);

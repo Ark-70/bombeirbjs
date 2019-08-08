@@ -49,14 +49,16 @@ class Mob {
     let x = this.cell.grid.x;
     let y = this.cell.grid.y;
     let cells = [[x-1, y], [x, y-1], [x+1, y], [x, y+1]];
+    let correspondingCellsDir = ['LEFT', 'UP', 'RIGHT', 'DOWN']
+    let possiblesTab = [];
+
     for (var i = 0; i < cells.length; i++) {
       let type = map.getCellTypeAt(cells[i][0], cells[i][1]);
       if(Mob.isTypeAnObstacle(type)){ //equivalent this.constructor.isTypeAnObstacle()
-
+        possiblesTab.push(correspondingCellsDir[i]);
       }
-
     }
-
+    return possiblesTab;
   }
 
 
