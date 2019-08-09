@@ -22,11 +22,12 @@ class Bombermob extends Mob{
       case 'iddle_first_frame':
         stopAnimationIfOn(this);
         this.startIddleDate = (new Date()).getTime();
-        this.iddleDuration = Math.random()*4500;
+        this.iddleDuration = Math.random()*3500+1000;
         this.state = 'iddle';
       //no break -> ->
 
       case 'iddle':
+        debugger;
         if(this.iddleTimeFinished()){
           this.startIddleDate = null;
           this.prepareToMove();
@@ -42,7 +43,11 @@ class Bombermob extends Mob{
           if(success){
             this.cell.updateClassDir(this.nextMove);
           }else{
-            this.state = 'iddle_first_frame';
+            if(Math.random()<0.5){
+              this.state = 'iddle'; //don't stop animation, juste rethink of a move
+            }else{
+              this.state = 'iddle_first_frame';
+            }
           }
         }else{
           this.bePushedAway();//if not entirely on the cell
@@ -61,6 +66,7 @@ class Bombermob extends Mob{
   }
 
   prepareToMove(){
+    debugger;
     let possibleMoves = this.whereCanTheyMove();
     this.nextMove = this.chooseMove(possibleMoves);
     this.cellDestination = this.nextCellAfterMove(this.nextMove);
@@ -69,7 +75,10 @@ class Bombermob extends Mob{
   canTheyStillMove(){return 1};
 
   chooseMove(possibleMoves){
-    return 'RIGHT';
+    let index = Math.floor(Math.random()*possibleMoves.length);
+    console.log(possibleMoves);
+    return possibleMoves[index];
+    // return 'RIGHT';
   }
 
   canTheyMove(){
@@ -77,10 +86,10 @@ class Bombermob extends Mob{
   }
 
   nextCellAfterMove(dir){
-    if(dir=='LEFT')   return {x:this.cell.grid.x, y:this.cell.grid.y};
-    if(dir=='RIGHT')  return {x:this.cell.grid.x, y:this.cell.grid.y};
-    if(dir=='UP')     return {x:this.cell.grid.x, y:this.cell.grid.y-1};
-    if(dir=='DOWN')   return {x:this.cell.grid.x, y:this.cell.grid.y+1};
+    if(dir=='LEFT')   return {x:this.cell.grid.x-1, y:this.cell.grid.y};
+    if(dir=='RIGHT')  return {x:this.cell.grid.x+1, y:this.cell.grid.y};
+    if(dir=='UP')     return {x:this.cell.grid.x,   y:this.cell.grid.y-1};
+    if(dir=='DOWN')   return {x:this.cell.grid.x,   y:this.cell.grid.y+1};
   }
 
   moveTo(direction, cellDest){
@@ -91,19 +100,19 @@ class Bombermob extends Mob{
     switch (direction) {
       case 'LEFT':
       if(gridPosToUpperLeft(cellDest.x)<this.cell.upperLeft.x) canMove = 1;
-        speedX = this.speed;
+        speedX = -this.speed;
         break;
       case 'RIGHT':
-        console.log(this.cell.upperLeft.x,"<",gridPosToUpperLeft(cellDest.x)+TILE_SIZE-1);
-        if(this.cell.upperLeft.x<gridPosToUpperLeft(cellDest.x)+TILE_SIZE-1) canMove = 1;
+        if(this.cell.upperLeft.x<gridPosToUpperLeft(cellDest.x)) canMove = 1;
+        // if(this.cell.upperLeft.x<gridPosToUpperLeft(cellDest.x)+TILE_SIZE-1) canMove = 1;
         speedX = this.speed;
         break;
       case 'UP':
         if(gridPosToUpperLeft(cellDest.y)<this.cell.upperLeft.y) canMove = 1;
-        speedY = this.speed;
+        speedY = -this.speed;
         break;
       case 'DOWN':
-        if(this.cell.upperLeft.y<gridPosToUpperLeft(cellDest.y)+TILE_SIZE-1) canMove = 1;
+        if(this.cell.upperLeft.y<gridPosToUpperLeft(cellDest.y)) canMove = 1;
         speedY = this.speed;
         break;
     }
@@ -111,7 +120,7 @@ class Bombermob extends Mob{
       // this.move(direction);
       this.changePosition(this.cell.center.x+speedX, this.cell.center.y+speedY) //speedX
     }
-    return canMove
+    return canMove;
   }
 
 
@@ -147,6 +156,6 @@ class Bombermob extends Mob{
     return ( (new Date()).getTime() > (this.startIddleDate + this.iddleDuration) );
   }
 
-  firstFrameOfIddle(){ return (this.startIddleDate == null) }
+  // firstFrameOfIddle(){ return (this.startIddleDate == null) }
 
 }

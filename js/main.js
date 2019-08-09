@@ -35,7 +35,6 @@ function gameUpdate(){
   }
   for (mob of mobs) {
     mob.update();
-    mob.display();
     console.log(mob.cell.grid);
   }
   // for (bomb of bombs){
@@ -47,7 +46,11 @@ function gameUpdate(){
 
 function gameDraw(){
   for (player of players) {
-    player.display();
+    // player.display();
+  }
+
+  for (mob of mobs) {
+    mob.display();
   }
   // for (bomb of bombs){
   //   bomb.display();

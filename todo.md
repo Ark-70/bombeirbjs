@@ -29,3 +29,4 @@
   les changer de manière à remplacer entièrement la cell et en créer des nouvelles, en faire une fonction
   //bug frame0 frame1 frame0 frame1 qui reste même si l'item a disparu
   //bug diagonale vers haut/bas d'un muret = bug
+  <!-- //bug mob 2 pas vers droite/bas 1 vers up/gauche -->
