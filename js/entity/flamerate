@@ -6,7 +6,7 @@ class Flame {
     this.expired = false;
     this.cooldown = 700;//temps d'expiration en ms
 
-    flameType = this.checkDestruction(xG, yG, flameType);
+    flameType = this.checkDestruction(xG, yG);//pas de flamme par def
 
     // this.cell.$elmt.addClass('flame--'+color);
     this.cell.$elmt.addClass(flameType);
@@ -36,33 +36,26 @@ class Flame {
     this.cell.$elmt.remove();//supprimer du dom
   }
 
-  checkDestruction(xG, yG, flameType){
-    let tmpBlock = map.getCellAt(xG, yG);
-    let typeWithoutSubype = tmpBlock._type.split("_")[0];
-
-    switch (typeWithoutSubype) {
-      case 'block':
-        flameType = 'block';
-        map.replaceSingleTypeOfCells([xG, yG], 'item_bombUp');
-        tmpBlock.animation = new MyAnimation(tmpBlock.$elmt, 'items.png', 100, [0, 1]);
-        tmpBlock.animation.startAnimation();
-        break;
-
-      case 'item':
-        flameType = 'item';
-        debugger;
-        map.replaceSingleTypeOfCells([xG, yG], 'empty');
-        break;
-      default:
+  checkDestruction(xG, yG){
+    let flameType;
+    if(map.getCellTypeAt(xG, yG)=='block'){
+      //TODO A déplacer
+      flameType = 'block';
+      let tmpBlock = map.getCellAt(xG, yG);
+      map.replaceSingleTypeOfCells([xG, yG], 'item_bombUp');
+      // tmpBlock._type = 'item';
+      // tmpBlock.updateDomType('block', 'item');$
+      console.log(tmpBlock);
+      tmpBlock.animation = new MyAnimation(tmpBlock.$elmt, 'items.png', 100, [0, 1]);
+      tmpBlock.animation.startAnimation();
+    }else if(map.getCellTypeAt(xG, yG)=='item'){
+      //TODO A déplacer
+      flameType = 'item';
+      let tmpBlock = map.getCellAt(xG, yG);
+      tmpBlock._type = 'empty';
+      // tmpBlock.updateDomType('item', 'empty');
+      map.replaceSingleTypeOfCells([xG, yG], 'empty');
     }
-
-    let mobs = map.getMobsAt(xG, yG);
-    if(mobs.length>0){
-      for (mob of mobs) {
-        mob.die();
-      }
-    }
-
     return flameType;
   }
 

@@ -6,7 +6,7 @@ class Flame {
     this.expired = false;
     this.cooldown = 700;//temps d'expiration en ms
 
-    flameType = this.checkDestruction(xG, yG, flameType);
+    this.checkDestruction(xG, yG);
 
     // this.cell.$elmt.addClass('flame--'+color);
     this.cell.$elmt.addClass(flameType);
@@ -36,34 +36,24 @@ class Flame {
     this.cell.$elmt.remove();//supprimer du dom
   }
 
-  checkDestruction(xG, yG, flameType){
+  checkDestruction(xG, yG){
     let tmpBlock = map.getCellAt(xG, yG);
-    let typeWithoutSubype = tmpBlock._type.split("_")[0];
 
-    switch (typeWithoutSubype) {
+
+    switch (tmpBlock._type) {
       case 'block':
-        flameType = 'block';
+        let flameType = 'block';
         map.replaceSingleTypeOfCells([xG, yG], 'item_bombUp');
         tmpBlock.animation = new MyAnimation(tmpBlock.$elmt, 'items.png', 100, [0, 1]);
         tmpBlock.animation.startAnimation();
         break;
-
       case 'item':
-        flameType = 'item';
-        debugger;
+        let flameType = 'item';
         map.replaceSingleTypeOfCells([xG, yG], 'empty');
         break;
       default:
     }
 
-    let mobs = map.getMobsAt(xG, yG);
-    if(mobs.length>0){
-      for (mob of mobs) {
-        mob.die();
-      }
-    }
-
-    return flameType;
   }
 
 

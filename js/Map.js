@@ -20,11 +20,20 @@ class Map {
     this._cellSize = this._height/gridHeight;//marche tant que height==width
     console.log(this._cellSize);
     this.constructGridCells(this.cells);
-    this._cellsWall = [[8, 12], [2, 5], [10, 4], [12, 6], [6, 6], [7, 1]];
+    this._cellsWall = [[8, 12], [2, 5], [10, 4], [12, 6], [6, 6], [7, 1],
+
+                      [0,0], [1,0], [2,0], [3,0], [4,0], [5,0], [6,0], [7,0], [8,0], [9,0], [10,0], [11,0], [12,0], [13,0],
+                            [0,1], [0,2], [0,3], [0,4], [0,5], [0,6], [0,7], [0,8], [0,9], [0,10], [0,11], [0,12], [0,13],
+                            [13,1], [13,2], [13,3], [13,4], [13,5], [13,6], [13,7], [13,8], [13,9], [13,10], [13,11], [13,12], [13,13],
+                            [1,13], [2,13], [3,13], [4,13], [5,13], [6,13], [7,13], [8,13], [9,13], [10,13], [11,13], [12,13], [13,13]];
     this._cellsBlock = [[10, 12], [4, 5], [8, 4], [6,9], [10,7], [4,1], [11,1], [2,10]];
-    this.mobs = [[7, 6], [3, 3], [6, 6], [8,8]];
+    // this.mobs = [[7, 6], [3, 3], [6, 6], [8,8]];
+    this.initMobs = [[7, 6]];
     // this.replaceTypeOfCells(this.cellsBlock, 'block');
     // this.replaceTypeOfCells(this.cellsWall, 'wall');
+
+    this._cells;
+    this.mobs;
   }
 
   constructGridCells(cells){
@@ -46,6 +55,16 @@ class Map {
     this._cells.push(tmpCell);
   }
 
+  getMobsAt(x, y){
+    let mobsFound = [];
+    for (mob of this.mobs) {
+      if(mob.cell.grid.x==x && mob.cell.grid.y==y){
+        mobsFound.push(mob);
+      }
+    }
+    return mobsFound;
+  }
+
   getCellAt(x, y){
       let cell = this._cells[x][y];
       if(cell==undefined){
@@ -59,19 +78,19 @@ class Map {
   }
 
   createForecellMobs(posTab){
-    let tmpTab = [];
+    this.mobs = [];
     for (let pos of posTab) {
-      tmpTab.push(new Bombermob(pos[0], pos[1]));
+      this.mobs.push(new Bombermob(pos[0], pos[1]));
     }
-    return tmpTab;
+    return this.mobs;
   }
 
   replaceTypeOfCells(cellsPosTab, type){
-    // let oldCell = xG, yG, type='empty', isForeground=false, drop=null
     for (let cellPos of cellsPosTab) {
       this.replaceSingleTypeOfCells(cellPos, type);
     }
   }
+
   replaceSingleTypeOfCells(cellPos, type){
     let old = this._cells[cellPos[0]][cellPos[1]];
     let newCell;
@@ -88,6 +107,7 @@ class Map {
     this._cells[cellPos[0]][cellPos[1]] = newCell;
     // old._$elmt.removeClass().addClass('cell');
     newCell._$elmt = old._$elmt;
+    debugger;
     newCell.updateDomType(old.type, newCell.type);
   }
 

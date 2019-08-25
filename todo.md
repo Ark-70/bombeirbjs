@@ -30,3 +30,6 @@
   //bug frame0 frame1 frame0 frame1 qui reste même si l'item a disparu
   //bug diagonale vers haut/bas d'un muret = bug
   <!-- //bug mob 2 pas vers droite/bas 1 vers up/gauche -->
+
+# Last touch :
+static checkdestruction maybe pour arreter les flammes a un items

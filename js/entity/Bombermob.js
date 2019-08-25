@@ -27,7 +27,6 @@ class Bombermob extends Mob{
       //no break -> ->
 
       case 'iddle':
-        debugger;
         if(this.iddleTimeFinished()){
           this.startIddleDate = null;
           this.prepareToMove();
@@ -43,7 +42,7 @@ class Bombermob extends Mob{
           if(success){
             this.cell.updateClassDir(this.nextMove);
           }else{
-            if(Math.random()<0.5){
+            if(Math.random()<0.80){
               this.state = 'iddle'; //don't stop animation, juste rethink of a move
             }else{
               this.state = 'iddle_first_frame';
@@ -52,8 +51,6 @@ class Bombermob extends Mob{
         }else{
           this.bePushedAway();//if not entirely on the cell
         }
-
-          // this.state = 'iddle';
       break;
 
       case 'exploding':
@@ -66,7 +63,6 @@ class Bombermob extends Mob{
   }
 
   prepareToMove(){
-    debugger;
     let possibleMoves = this.whereCanTheyMove();
     this.nextMove = this.chooseMove(possibleMoves);
     this.cellDestination = this.nextCellAfterMove(this.nextMove);

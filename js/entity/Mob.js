@@ -38,10 +38,18 @@ class Mob {
       case 'exploding':
 
         break;
+      case 'dead':
+
+        break;
       case 'invulnerable':
         break;
       default:
     }
+  }
+
+  die(){
+    this.state = 'dead';
+    this.cell.$elmt.remove();
   }
 
 
